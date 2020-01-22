@@ -7,7 +7,18 @@ SerialPort.list().then((results) => {
   console.log(result);
 })();*/
 
-const port = new SerialPort('COM1');
+const port = new SerialPort(
+  'COM1',
+  {
+    baudRate: 9600,
+    dataBits: 8,
+    stopBits: 1,
+    parity: 'none'
+  },
+  (error) => {
+    console.log(`connection with serialport COM1 failed: ${error}`);
+  }
+);
 
 port.write('main screen turn on', function(err) {
   if (err) {
