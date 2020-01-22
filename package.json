@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/PopPushOut/serial-port-reader/issues"
   },
-  "homepage": "https://github.com/PopPushOut/serial-port-reader#readme"
+  "homepage": "https://github.com/PopPushOut/serial-port-reader#readme",
+  "dependencies": {
+    "serialport": "^8.0.6"
+  }
 }
