@@ -55,6 +55,7 @@ port.write(trame, function(err) {
     return console.log('Error on write: ', err.message);
   }
   console.log('Comment sent to inverter');
+  port.read();
 });
 
 port.on('data', (data) => {
