@@ -74,3 +74,7 @@ port.on('read', function(data) {
 port.on('open', function(res) {
   console.log('Port open');
 });
+
+setTimeout(() => {
+  port.close();
+}, 2000);
