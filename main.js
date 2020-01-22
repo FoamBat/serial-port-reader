@@ -24,12 +24,11 @@ port.write('main screen turn on', function(err) {
   if (err) {
     return console.log('Error on write: ', err.message);
   }
-  console.log('message written');
+  port.read();
 });
 
-// Open errors will be emitted as an error event
-port.on('error', function(err) {
-  console.log('Error: ', err.message);
+port.on('read', function(data) {
+  console.log('Data from inverter: ', data);
 });
 
 // The open event is always emitted
