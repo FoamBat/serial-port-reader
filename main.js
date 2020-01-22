@@ -54,18 +54,21 @@ port.write(trame, function(err) {
   if (err) {
     return console.log('Error on write: ', err.message);
   }
-  console.log('Comment sent to inverter');
+  console.log('comment sent to inverter');
   port.read();
 });
 
 port.on('data', (data) => {
-  console.log('data from port' + data);
+  console.log(data);
 });
-
 parser.on('data', (data) => {
-  console.log('data from parser' + data);
+  console.log(data);
 });
 parser.on('data', console.log);
+
+port.on('read', function(data) {
+  console.log('Data from inverter: ', data);
+});
 
 // The open event is always emitted
 port.on('open', function(res) {
