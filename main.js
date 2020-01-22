@@ -57,8 +57,12 @@ port.write(trame, function(err) {
   console.log('Comment sent to inverter');
 });
 
+port.on('data', (data) => {
+  console.log('data from port' + data);
+});
+
 parser.on('data', (data) => {
-  console.log('data from pipe' + data);
+  console.log('data from parser' + data);
 });
 parser.on('data', console.log);
 
