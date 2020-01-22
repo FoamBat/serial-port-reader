@@ -1,11 +1,10 @@
 const SerialPort = require('serialport');
+const Readline = require('@serialport/parser-readline');
 SerialPort.list().then((results) => {
   console.log(results);
 });
-/*(async function() {
-  const result = await sp.list();
-  console.log(result);
-})();*/
+
+const parser = new Readline();
 
 const port = new SerialPort(
   'COM1',
@@ -20,12 +19,17 @@ const port = new SerialPort(
   }
 );
 
-port.write('main screen turn on', function(err) {
+port.pipe(parser);
+
+port.write('Random text', function(err) {
   if (err) {
     return console.log('Error on write: ', err.message);
   }
+  console.log('comment sent to inverter');
   port.read();
 });
+
+parser.on('data', console.log);
 
 port.on('read', function(data) {
   console.log('Data from inverter: ', data);
