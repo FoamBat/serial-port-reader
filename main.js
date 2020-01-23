@@ -25,6 +25,9 @@ var trame = [187, 187, 0, 0, 0, 0, 0, 0, 0];
 var commandToGetConfigurations = [187, 187, 1, 0, 0, 1, 1, 4, 0];
 var pvOutputCom = [187, 187, 01, 00, 00, 01, 01, 02];
 var commands = [trame, commandToGetConfigurations, pvOutputCom];
+for (const command of commands) {
+  calculateChecksum(command);
+}
 function calculateChecksum(trame) {
   const n = trame.length;
   let checksum = 0;
@@ -37,8 +40,6 @@ function calculateChecksum(trame) {
 
   return checksum;
 }
-/* compute crc */
-calculateChecksum(commandToGetConfigurations);
 
 var port = new SerialPort(
   'COM1',
