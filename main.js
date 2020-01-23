@@ -21,7 +21,7 @@ SerialPort.list().then((results) => {
 // trame[6] = 0x00;
 // trame[7] = 0x00;
 // trame[8] = 0x00;
-let trame = [187, 187, 0, 0, 0, 0, 0, 0, 0];
+var trame = [187, 187, 0, 0, 0, 0, 0, 0, 0];
 let commandToGetConfigurations = [187, 187, 1, 0, 0, 1, 1, 4];
 let pvOutputCom = [187, 187, 01, 00, 00, 01, 01, 02];
 function calculateChecksum(trame) {
@@ -39,7 +39,7 @@ function calculateChecksum(trame) {
 /* compute crc */
 calculateChecksum(trame);
 
-const port = new SerialPort(
+var port = new SerialPort(
   'COM1',
   {
     baudRate: 9600,
@@ -51,8 +51,6 @@ const port = new SerialPort(
     console.log(`connection with serialport COM1 failed: ${error}`);
   }
 );
-
-sendCommand(trame, port);
 
 function sendCommand(command, port) {
   console.log(port.isOpen);
@@ -76,8 +74,8 @@ port.on('error', function(err) {
 // The open event is always emitted
 port.on('open', function(res) {
   console.log('Port open');
+  sendCommand(trame, port);
 });
-
 setTimeout(() => {
   if (!port.isOpen) return;
   port.close((err) => {
