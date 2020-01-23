@@ -54,7 +54,7 @@ const port = new SerialPort(
   }
 );
 
-port.pipe(parser);
+// port.pipe(parser);
 
 port.write(trame, function(err) {
   if (err) {
