@@ -55,7 +55,7 @@ const port = new SerialPort(
 sendCommand(trame, port);
 
 function sendCommand(command, port) {
-  //console.log(command, port);
+  console.log(port.writable);
   port.write(command, function(err) {
     if (err) {
       return console.log('Error on write: ', err.message);
@@ -80,7 +80,6 @@ port.on('open', function(res) {
 
 setTimeout(() => {
   if (!port.isOpen) return;
-  console.log(port.writable);
   port.close((err) => {
     console.log('Port close error: ', err);
   });
