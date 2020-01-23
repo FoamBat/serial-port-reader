@@ -21,8 +21,9 @@ SerialPort.list().then((results) => {
 // trame[6] = 0x00;
 // trame[7] = 0x00;
 // trame[8] = 0x00;
-let trame = [187, 187, 0, 0, 0, 0, 0, 0, 0];
-let commandToGetConfigurations = [187, 187, 1, 0, 0, 1, 1, 4, 0];
+let trame = [187, 187, 0, 0, 0, 0, 0, 0];
+let commandToGetConfigurations = [187, 187, 1, 0, 0, 1, 1, 4];
+let pvOutputCom = [187, 187, 01, 00, 00, 01, 01, 02];
 function calculateChecksum(trame) {
   const n = trame.length;
   let checksum = 0;
@@ -59,14 +60,19 @@ function sendCommand(command, port) {
     if (err) {
       return console.log('Error on write: ', err.message);
     }
-    console.log('comment sent to inverter');
-    port.read();
+    console.log('Command sent!');
   });
 }
-port.on('data', (data) => {
-  console.log('port on data: ', data);
+// Read data that is available but keep the stream in "paused mode"
+port.on('readable', function() {
+  console.log('Port is readable, do read:', port.read());
 });
-
+port.on('data', (res) => {
+  console.log('Port on data: ', res);
+});
+port.on('error', function(err) {
+  console.log('Error: ', err.message);
+});
 // The open event is always emitted
 port.on('open', function(res) {
   console.log('Port open');
@@ -74,7 +80,8 @@ port.on('open', function(res) {
 
 setTimeout(() => {
   if (!port.isOpen) return;
+  console.log(port.writable);
   port.close((err) => {
     console.log('Port close error: ', err);
   });
-}, 20000);
+}, 10000);
