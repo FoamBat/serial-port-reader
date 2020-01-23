@@ -54,6 +54,7 @@ var port = new SerialPort(
 
 function sendCommand(command, port) {
   console.log('Port is open = ', port.isOpen, ' isReadable = ', port.readable);
+  console.log('Command to send = ', command);
   port.write(command, function(err) {
     if (err) {
       return console.log('Error on write: ', err.message);
