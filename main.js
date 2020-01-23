@@ -1,7 +1,7 @@
 const SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline');
 SerialPort.list().then((results) => {
-  console.log(results);
+  //console.log(results);
 });
 //let ss = '';
 //'0b 31 30 30 30 32 31 32 31 31 30 31'.split(' ').forEach((hexDigit) => {
@@ -48,7 +48,7 @@ var port = new SerialPort(
     parity: 'none'
   },
   (error) => {
-    console.log(`connection with serialport COM1 failed: ${error}`);
+    //console.log(`connection with serialport COM1 failed: ${error}`);
   }
 );
 
@@ -79,7 +79,7 @@ port.on('open', function(res) {
 });
 setTimeout(() => {
   if (!port.isOpen) return;
-  port.close((err) => {
-    console.log('Port close error: ', err);
+  port.close(() => {
+    console.log('Port closed!');
   });
 }, 10000);
