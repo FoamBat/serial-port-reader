@@ -78,9 +78,12 @@ port.on('open', function(res) {
   console.log('Port open');
   var i = 0;
   setInterval(() => {
+    if (i % 3 == 0) {
+      i = 0;
+    }
     sendCommand(commands[i], port);
     i++;
-  }, 500);
+  }, 2000);
 });
 setTimeout(() => {
   if (!port.isOpen) return;
