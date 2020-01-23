@@ -78,14 +78,14 @@ port.on('error', function(err) {
 // The open event is always emitted
 port.on('open', function(res) {
   console.log('Port open');
-  var i = 0;
-  setInterval(() => {
-    if (i % 3 == 0) {
-      i = 0;
-    }
-    sendCommand(commands[0], port);
-    i++;
-  }, 3000);
+  sendCommand(commands[0], port);
+  //   var i = 0;
+  //   setInterval(() => {
+  //     if (i % 3 == 0) {
+  //       i = 0;
+  //     }
+  //     i++;
+  //   }, 3000);
 });
 setTimeout(() => {
   if (!port.isOpen) return;
