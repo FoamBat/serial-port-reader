@@ -10,18 +10,19 @@ let ss = '';
 console.log(ss);
 // bb bb 00 00 00 00 00 80
 // 0b 31 30 30 30 32 31 32 31 31 30 31 04 1a (last 2 bytes checksum)
-let trame = [];
+let trame = [187, 187, 0, 0, 0, 0, 0, 0, 0];
 //case 1:	/* ask for serial number */
-trame[0] = 0xbb; //187
-trame[1] = 0xbb;
-trame[2] = 0x00; //0
-trame[3] = 0x00;
-trame[4] = 0x00;
-trame[5] = 0x00;
-trame[6] = 0x00;
-trame[7] = 0x00;
-trame[8] = 0x00;
+// trame[0] = 0xbb; //187
+// trame[1] = 0xbb;
+// trame[2] = 0x00; //0
+// trame[3] = 0x00;
+// trame[4] = 0x00;
+// trame[5] = 0x00;
+// trame[6] = 0x00;
+// trame[7] = 0x00;
+// trame[8] = 0x00;
 
+let commandToGetConfigurations = [1, 0, 0, 1, 1, 4];
 function calculateChecksum(trame) {
   const n = trame.length;
   let checksum = 0;
@@ -81,5 +82,8 @@ port.on('open', function(res) {
 });
 
 setTimeout(() => {
-  port.close();
+  if (!port.isOpen) return;
+  port.close((err) => {
+    console.log(err);
+  });
 }, 2000);
