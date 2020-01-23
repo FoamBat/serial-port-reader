@@ -21,10 +21,11 @@ SerialPort.list().then((results) => {
 // trame[6] = 0x00;
 // trame[7] = 0x00;
 // trame[8] = 0x00;
-var trame = [187, 187, 0, 0, 0, 0, 0, 0, 1];
+var askForRegisters = [187, 187, 1, 0, 0, 1, 1, 2, 0];
+var trame = [187, 187, 0, 0, 0, 0, 0, 0, 0];
 var commandToGetConfigurations = [187, 187, 1, 0, 0, 1, 1, 4, 0];
-var pvOutputCom = [187, 187, 01, 00, 00, 01, 01, 02];
-var commands = [trame, commandToGetConfigurations, pvOutputCom];
+var pvOutputCom = [187, 187, 1, 0, 0, 1, 1, 2, 0];
+var commands = [trame, commandToGetConfigurations, askForRegisters];
 for (const command of commands) {
   calculateChecksum(command);
 }
