@@ -76,10 +76,9 @@ port.on('error', function(err) {
 port.on('open', function(res) {
   console.log('Port open');
   sendCommand(trame, port);
-  let listener = setInterval(() => {
+  setInterval(() => {
     port.read();
   }, 100);
-  listener.close();
 });
 setTimeout(() => {
   if (!port.isOpen) return;
