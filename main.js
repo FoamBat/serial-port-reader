@@ -21,7 +21,7 @@ SerialPort.list().then((results) => {
 // trame[6] = 0x00;
 // trame[7] = 0x00;
 // trame[8] = 0x00;
-let trame = [187, 187, 0, 0, 0, 0, 0, 0];
+let trame = [187, 187, 0, 0, 0, 0, 0, 0, 0];
 let commandToGetConfigurations = [187, 187, 1, 0, 0, 1, 1, 4];
 let pvOutputCom = [187, 187, 01, 00, 00, 01, 01, 02];
 function calculateChecksum(trame) {
@@ -55,7 +55,7 @@ const port = new SerialPort(
 sendCommand(trame, port);
 
 function sendCommand(command, port) {
-  console.log(port.writable);
+  console.log(port.isOpen);
   port.write(command, function(err) {
     if (err) {
       return console.log('Error on write: ', err.message);
