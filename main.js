@@ -53,7 +53,7 @@ var port = new SerialPort(
 );
 
 function sendCommand(command, port) {
-  console.log(port.isOpen);
+  console.log('Port is open = ', port.isOpen, ' isReadable = ', port.readable);
   port.write(command, function(err) {
     if (err) {
       return console.log('Error on write: ', err.message);
@@ -64,6 +64,7 @@ function sendCommand(command, port) {
 // Read data that is available but keep the stream in "paused mode"
 port.on('readable', function() {
   console.log('Port is readable, do read');
+  port.read();
 });
 port.on('data', (res) => {
   console.log('Port on data: ', res);
