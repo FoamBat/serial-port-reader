@@ -22,7 +22,7 @@ SerialPort.list().then((results) => {
 // trame[7] = 0x00;
 // trame[8] = 0x00;
 var trame = [187, 187, 0, 0, 0, 0, 0, 0, 0];
-let commandToGetConfigurations = [187, 187, 1, 0, 0, 1, 1, 4];
+var commandToGetConfigurations = [187, 187, 1, 0, 0, 1, 1, 4];
 let pvOutputCom = [187, 187, 01, 00, 00, 01, 01, 02];
 function calculateChecksum(trame) {
   const n = trame.length;
@@ -37,7 +37,7 @@ function calculateChecksum(trame) {
   return checksum;
 }
 /* compute crc */
-calculateChecksum(trame);
+calculateChecksum(commandToGetConfigurations);
 
 var port = new SerialPort(
   'COM1',
@@ -75,7 +75,7 @@ port.on('error', function(err) {
 // The open event is always emitted
 port.on('open', function(res) {
   console.log('Port open');
-  sendCommand(trame, port);
+  sendCommand(commandToGetConfigurations, port);
   setInterval(() => {
     port.read();
   }, 100);
