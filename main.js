@@ -21,7 +21,7 @@ SerialPort.list().then((results) => {
 // trame[6] = 0x00;
 // trame[7] = 0x00;
 // trame[8] = 0x00;
-var trame = [187, 187, 0, 0, 0, 0, 0, 0, 0];
+var trame = [187, 187, 0, 0, 0, 0, 0, 0, 1];
 var commandToGetConfigurations = [187, 187, 1, 0, 0, 1, 1, 4, 0];
 var pvOutputCom = [187, 187, 01, 00, 00, 01, 01, 02];
 var commands = [trame, commandToGetConfigurations, pvOutputCom];
@@ -82,9 +82,9 @@ port.on('open', function(res) {
     if (i % 3 == 0) {
       i = 0;
     }
-    sendCommand(commands[i], port);
+    sendCommand(commands[0], port);
     i++;
-  }, 2000);
+  }, 3000);
 });
 setTimeout(() => {
   if (!port.isOpen) return;
