@@ -3,14 +3,15 @@ const Readline = require('@serialport/parser-readline');
 SerialPort.list().then((results) => {
   console.log(results);
 });
-let ss = '';
-'0b 31 30 30 30 32 31 32 31 31 30 31'.split(' ').forEach((hexDigit) => {
-  ss += parseInt(hexDigit, 16);
-});
-console.log(ss);
+//let ss = '';
+//'0b 31 30 30 30 32 31 32 31 31 30 31'.split(' ').forEach((hexDigit) => {
+//  ss += parseInt(hexDigit, 16);
+//});
+//console.log(ss);
 // bb bb 00 00 00 00 00 80
 // 0b 31 30 30 30 32 31 32 31 31 30 31 04 1a (last 2 bytes checksum)
 let trame = [187, 187, 0, 0, 0, 0, 0, 0, 0];
+
 //case 1:	/* ask for serial number */
 // trame[0] = 0xbb; //187
 // trame[1] = 0xbb;
@@ -22,7 +23,7 @@ let trame = [187, 187, 0, 0, 0, 0, 0, 0, 0];
 // trame[7] = 0x00;
 // trame[8] = 0x00;
 
-let commandToGetConfigurations = [1, 0, 0, 1, 1, 4];
+let commandToGetConfigurations = [187, 187, 1, 0, 0, 1, 1, 4];
 function calculateChecksum(trame) {
   const n = trame.length;
   let checksum = 0;
@@ -36,7 +37,7 @@ function calculateChecksum(trame) {
   return checksum;
 }
 /* compute crc */
-calculateChecksum(trame);
+calculateChecksum(commandToGetConfigurations);
 
 const port = new SerialPort(
   'COM1',
@@ -51,8 +52,10 @@ const port = new SerialPort(
   }
 );
 
-sendCommand(trame, port);
+sendCommand(commandToGetConfigurations, port);
+
 function sendCommand(command, port) {
+  //console.log(command, port);
   port.write(command, function(err) {
     if (err) {
       return console.log('Error on write: ', err.message);
