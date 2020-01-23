@@ -10,7 +10,6 @@ SerialPort.list().then((results) => {
 //console.log(ss);
 // bb bb 00 00 00 00 00 80
 // 0b 31 30 30 30 32 31 32 31 31 30 31 04 1a (last 2 bytes checksum)
-let trame = [187, 187, 0, 0, 0, 0, 0, 0, 0];
 
 //case 1:	/* ask for serial number */
 // trame[0] = 0xbb; //187
@@ -22,7 +21,7 @@ let trame = [187, 187, 0, 0, 0, 0, 0, 0, 0];
 // trame[6] = 0x00;
 // trame[7] = 0x00;
 // trame[8] = 0x00;
-
+let trame = [187, 187, 0, 0, 0, 0, 0, 0, 0];
 let commandToGetConfigurations = [187, 187, 1, 0, 0, 1, 1, 4, 0];
 function calculateChecksum(trame) {
   const n = trame.length;
@@ -37,7 +36,7 @@ function calculateChecksum(trame) {
   return checksum;
 }
 /* compute crc */
-calculateChecksum(commandToGetConfigurations);
+calculateChecksum(trame);
 
 const port = new SerialPort(
   'COM1',
@@ -52,7 +51,7 @@ const port = new SerialPort(
   }
 );
 
-sendCommand(commandToGetConfigurations, port);
+sendCommand(trame, port);
 
 function sendCommand(command, port) {
   //console.log(command, port);
