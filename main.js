@@ -78,4 +78,4 @@ setTimeout(() => {
   port.close((err) => {
     console.log('Port close error: ', err);
   });
-}, 2000);
+}, 20000);
