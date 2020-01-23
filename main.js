@@ -84,6 +84,6 @@ port.on('open', function(res) {
 setTimeout(() => {
   if (!port.isOpen) return;
   port.close((err) => {
-    console.log(err);
+    console.log('Port close error: ', err);
   });
 }, 2000);
