@@ -63,7 +63,7 @@ function sendCommand(command, port) {
 }
 // Read data that is available but keep the stream in "paused mode"
 port.on('readable', function() {
-  console.log('Port is readable, do read:', port.read());
+  console.log('Port is readable, do read');
 });
 port.on('data', (res) => {
   console.log('Port on data: ', res);
