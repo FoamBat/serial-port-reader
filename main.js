@@ -23,7 +23,7 @@ let trame = [187, 187, 0, 0, 0, 0, 0, 0, 0];
 // trame[7] = 0x00;
 // trame[8] = 0x00;
 
-let commandToGetConfigurations = [187, 187, 1, 0, 0, 1, 1, 4];
+let commandToGetConfigurations = [187, 187, 1, 0, 0, 1, 1, 4, 0];
 function calculateChecksum(trame) {
   const n = trame.length;
   let checksum = 0;
