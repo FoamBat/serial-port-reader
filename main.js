@@ -65,7 +65,6 @@ function sendCommand(command, port) {
 // Read data that is available but keep the stream in "paused mode"
 port.on('readable', function() {
   console.log('Port is readable, do read');
-  port.read();
 });
 port.on('data', (res) => {
   console.log('Port on data: ', res);
@@ -77,6 +76,10 @@ port.on('error', function(err) {
 port.on('open', function(res) {
   console.log('Port open');
   sendCommand(trame, port);
+  let listener = setInterval(() => {
+    port.read();
+  }, 100);
+  listener.close();
 });
 setTimeout(() => {
   if (!port.isOpen) return;
