@@ -35,13 +35,9 @@ function calculateChecksum(trame) {
 
   return checksum;
 }
-
 /* compute crc */
 calculateChecksum(trame);
-console.log(trame);
 
-//const parser = new Readline();
-//console.log(parser);
 const port = new SerialPort(
   'COM1',
   {
@@ -55,25 +51,18 @@ const port = new SerialPort(
   }
 );
 
-// port.pipe(parser);
-
-port.write(trame, function(err) {
-  if (err) {
-    return console.log('Error on write: ', err.message);
-  }
-  console.log('comment sent to inverter');
-  port.read();
-});
-
+sendCommand(trame, port);
+function sendCommand(command, port) {
+  port.write(command, function(err) {
+    if (err) {
+      return console.log('Error on write: ', err.message);
+    }
+    console.log('comment sent to inverter');
+    port.read();
+  });
+}
 port.on('data', (data) => {
-  console.log(data);
-});
-// parser.on('data', (data) => {
-//   console.log(data);
-// });
-
-port.on('read', function(data) {
-  console.log('Data from inverter: ', data);
+  console.log('port on data: ', data);
 });
 
 // The open event is always emitted
