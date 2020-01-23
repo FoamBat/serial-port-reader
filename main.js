@@ -3,7 +3,13 @@ const Readline = require('@serialport/parser-readline');
 SerialPort.list().then((results) => {
   console.log(results);
 });
-
+let ss = '';
+'0b 31 30 30 30 32 31 32 31 31 30 31'.split(' ').forEach((hexDigit) => {
+  ss += parseInt(hexDigit, 16);
+});
+console.log(ss);
+// bb bb 00 00 00 00 00 80
+// 0b 31 30 30 30 32 31 32 31 31 30 31 04 1a (last 2 bytes checksum)
 let trame = [];
 //case 1:	/* ask for serial number */
 trame[0] = 0xbb; //187
@@ -33,8 +39,8 @@ function calculateChecksum(trame) {
 calculateChecksum(trame);
 console.log(trame);
 
-const parser = new Readline();
-
+//const parser = new Readline();
+//console.log(parser);
 const port = new SerialPort(
   'COM1',
   {
@@ -61,10 +67,9 @@ port.write(trame, function(err) {
 port.on('data', (data) => {
   console.log(data);
 });
-parser.on('data', (data) => {
-  console.log(data);
-});
-parser.on('data', console.log);
+// parser.on('data', (data) => {
+//   console.log(data);
+// });
 
 port.on('read', function(data) {
   console.log('Data from inverter: ', data);
