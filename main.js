@@ -19,6 +19,7 @@ var Readline = SerialPort.parsers.Readline; // make instance of Readline parser
 // trame[6] = 0x00;
 // trame[7] = 0x00;
 // trame[8] = 0x00;
+var askdata = [11, 187, 187, 1, 0, 0, 1, 1, 2, 0, 1, 123];
 var askForRegisters = [187, 187, 1, 0, 0, 1, 1, 2, 0];
 var trame = [187, 187, 0, 0, 0, 0, 0, 0, 0];
 var commandToGetConfigurations = [187, 187, 1, 0, 0, 1, 1, 4, 0];
@@ -81,7 +82,7 @@ parser.on('data', console.log);
 // The open event is always emitted
 port.on('open', function(res) {
   console.log('Port open');
-  writeAndDrain(commands[0]);
+  writeAndDrain(askdata);
 });
 
 setTimeout(() => {
@@ -89,4 +90,4 @@ setTimeout(() => {
   port.close(() => {
     console.log('Port closed!');
   });
-}, 10000);
+}, 120000);
