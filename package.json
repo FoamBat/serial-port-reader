@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/PopPushOut/serial-port-reader#readme",
   "dependencies": {
+    "@serialport/parser-readline": "^8.0.6",
     "serialport": "^8.0.6"
   }
 }

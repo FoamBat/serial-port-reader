@@ -1,8 +1,6 @@
 const SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline');
-SerialPort.list().then((results) => {
-  //console.log(results);
-});
+
 //let ss = '';
 //'0b 31 30 30 30 32 31 32 31 31 30 31'.split(' ').forEach((hexDigit) => {
 //  ss += parseInt(hexDigit, 16);
@@ -54,6 +52,7 @@ var port = new SerialPort(
     //console.log(`connection with serialport COM1 failed: ${error}`);
   }
 );
+const parser = port.pipe(new Readline());
 
 // sends data to the connected device via serial port
 function writeAndDrain(data, callback) {
@@ -73,7 +72,7 @@ function writeAndDrain(data, callback) {
   });
 }
 
-port.on('data', (data) => {
+parser.on('data', (data) => {
   console.log('Port on data: ', data);
 });
 
