@@ -73,7 +73,7 @@ function writeAndDrain(data, callback) {
 }
 
 port.on('data', (data) => {
-  console.log('Port on data: ', data.toString('utf-8'));
+  console.log('Port on data: ', data);
 });
 
 // The open event is always emitted
