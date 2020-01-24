@@ -1,9 +1,12 @@
 const SerialPort = require('serialport');
 //const Readline = require('@serialport/parser-readline');
 var Readline = SerialPort.parsers.Readline; // make instance of Readline parser
-SerialPort.list().then((result) => {
-  console.log(result);
-});
+
+// bb bb 00 00 00 00 00 80
+// 0b (11 bytes of data expected)
+// 31 30 30 30 31 38 35 31 31 30 31 04 23 ( 11 bytes + 2 bytes checksum)
+// bb bb 00 ff 00 00 00 00 01 15 02 8b
+//
 //let ss = '';
 //'0b 31 30 30 30 32 31 32 31 31 30 31'.split(' ').forEach((hexDigit) => {
 //  ss += parseInt(hexDigit, 16);
@@ -25,10 +28,10 @@ SerialPort.list().then((result) => {
 // trame[7] = 0x00;
 // trame[8] = 0x00;
 // format of LogIn command [9 bytes + 11 bytes of serial number + 2 bytes of checksum]
-
-var inverterSerialNumber = [49, 48, 48, 48, 50, 49, 50, 49, 49, 48, 49]; // 11 Bytes
+var inverter2SerialNumber = [49, 48, 48, 48, 49, 56, 53, 49, 49, 48, 49]; // 11 Bytes
+var inverter1SerialNumber = [49, 48, 48, 48, 50, 49, 50, 49, 49, 48, 49]; // 11 Bytes
 var logIn = [187, 187, 0, 0, 0, 0, 0, 1, 12]; // 9 Bytes
-var logInCommand = logIn.concat(inverterSerialNumber);
+var logInCommand = logIn.concat(inverter2SerialNumber);
 logInCommand[20] = 1;
 //calculateChecksum(logInCommand);
 console.log(`${logInCommand}  length = ${logInCommand.length}`);
@@ -96,7 +99,7 @@ port.on('open', function(res) {
   console.log('Port open');
   //writeAndDrain(commands[0]);
   setInterval(() => {
-    writeAndDrain(commands[0]);
+    writeAndDrain(logInCommand);
   }, 1000);
 });
 
