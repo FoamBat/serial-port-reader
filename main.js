@@ -53,7 +53,7 @@ var port = new SerialPort(
     //console.log(`connection with serialport COM1 failed: ${error}`);
   }
 );
-const parser = port.pipe(new Readline());
+
 // sends data to the connected device via serial port
 function writeAndDrain(data) {
   //console.log('Port is open = ', port.isOpen, ' isReadable = ', port.readable);
@@ -66,7 +66,7 @@ function writeAndDrain(data) {
     if (error) {
       console.log(error);
     } else {
-      //console.log(`drain and repeat write`);
+      // console.log(`drain and repeat write`);
       // waits until all output data has been transmitted to the serial port.
       port.drain(null);
     }
@@ -76,14 +76,12 @@ port.on('data', (data) => {
   console.log('Port on data: ', data);
 });
 
-parser.on('data', console.log);
-
 // The open event is always emitted
 port.on('open', function(res) {
   console.log('Port open');
   setInterval(() => {
-    writeAndDrain(askdata);
-  }, 500);
+    writeAndDrain(commands[0]);
+  }, 1000);
 });
 
 setTimeout(() => {
