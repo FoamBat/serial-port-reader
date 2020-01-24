@@ -1,6 +1,9 @@
 const SerialPort = require('serialport');
 //const Readline = require('@serialport/parser-readline');
 var Readline = SerialPort.parsers.Readline; // make instance of Readline parser
+SerialPort.list().then((result) => {
+  console.log(result);
+});
 //let ss = '';
 //'0b 31 30 30 30 32 31 32 31 31 30 31'.split(' ').forEach((hexDigit) => {
 //  ss += parseInt(hexDigit, 16);
