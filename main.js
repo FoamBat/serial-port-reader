@@ -77,9 +77,7 @@ port.on('data', (data) => {
   console.log('Port on data: ', data);
 });
 
-parser.on('data', (data) => {
-  console.log('Port on data: ', data);
-});
+parser.on('data', console.log);
 
 // The open event is always emitted
 port.on('open', function(res) {
