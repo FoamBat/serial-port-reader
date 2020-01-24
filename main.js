@@ -73,7 +73,7 @@ function writeAndDrain(data) {
     }
   });
 }
-data.on('data', (data) => {
+port.on('data', (data) => {
   console.log('Port on data: ', data);
 });
 
