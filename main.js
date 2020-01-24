@@ -66,6 +66,7 @@ function writeAndDrain(data, callback) {
     if (error) {
       console.log(error);
     } else {
+      console.log(`drain and repeat write`);
       // waits until all output data has been transmitted to the serial port.
       port.drain(callback);
     }
