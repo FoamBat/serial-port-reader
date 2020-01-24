@@ -36,7 +36,7 @@ var askForRegisters = [187, 187, 1, 0, 0, 1, 1, 2, 0];
 var trame = [187, 187, 0, 0, 0, 0, 0, 0, 0];
 var commandToGetConfigurations = [187, 187, 1, 0, 0, 1, 1, 4, 0];
 var pvOutputCom = [187, 187, 1, 0, 0, 1, 1, 2, 0];
-var commands = [logInCommand, askForRegisters];
+var commands = [trame];
 for (const command of commands) {
   calculateChecksum(command);
 }
@@ -91,9 +91,9 @@ port.on('data', (data) => {
 // The open event is always emitted
 port.on('open', function(res) {
   console.log('Port open');
-  writeAndDrain(commands[0]);
+  //writeAndDrain(commands[0]);
   setInterval(() => {
-    writeAndDrain(commands[1]);
+    writeAndDrain(commands[0]);
   }, 1000);
 });
 
