@@ -31,7 +31,7 @@ var Readline = SerialPort.parsers.Readline; // make instance of Readline parser
 var inverter2SerialNumber = [49, 48, 48, 48, 49, 56, 53, 49, 49, 48, 49]; // 11 Bytes
 var inverter1SerialNumber = [49, 48, 48, 48, 50, 49, 50, 49, 49, 48, 49]; // 11 Bytes
 var logIn = [187, 187, 0, 0, 0, 0, 0, 1, 12]; // 9 Bytes
-var logInCommand = logIn.concat(inverter2SerialNumber);
+var logInCommand = logIn.concat(inverter1SerialNumber);
 logInCommand[20] = 1;
 //calculateChecksum(logInCommand);
 console.log(`${logInCommand}  length = ${logInCommand.length}`);
