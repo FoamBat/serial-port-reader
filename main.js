@@ -5,9 +5,11 @@ var Readline = SerialPort.parsers.Readline; // make instance of Readline parser
 //'0b 31 30 30 30 32 31 32 31 31 30 31'.split(' ').forEach((hexDigit) => {
 //  ss += parseInt(hexDigit, 16);
 //});
-//console.log(ss);
-// bb bb 00 00 00 00 00 80
-// 0b 31 30 30 30 32 31 32 31 31 30 31 04 1a (last 2 bytes checksum)
+
+// bb bb 00 00 00 00 00 80 (type of response. (80) Contains Inverter serial number in the Data field)
+// 0b (length of data = 11 in dec)
+// 31 30 30 30 32 31 32 31 31 30 31 (Serial Number [49, 48, 48, 48, 50, 49, 50, 49, 49, 48, 49])
+// 04 1a (last 2 bytes checksum)
 
 //case 1:	/* ask for serial number */
 // trame[0] = 0xbb; //187
@@ -19,7 +21,16 @@ var Readline = SerialPort.parsers.Readline; // make instance of Readline parser
 // trame[6] = 0x00;
 // trame[7] = 0x00;
 // trame[8] = 0x00;
+// format of LogIn command [9 bytes + 11 bytes of serial number + 2 bytes of checksum]
+
+var inverterSerialNumber = [49, 48, 48, 48, 50, 49, 50, 49, 49, 48, 49]; // 11 Bytes
+var logIn = [187, 187, 0, 0, 0, 0, 0, 1, 12]; // 9 Bytes
+var logInCommand = logIn.concat(inverterSerialNumber);
+logInCommand[20] = 1;
+calculateChecksum(logInCommand);
+console.log(`${logInCommand}  length = ${logInCommand.length}`);
 var askdata = [11, 187, 187, 1, 0, 0, 1, 1, 2, 0, 1, 123];
+
 var askForRegisters = [187, 187, 1, 0, 0, 1, 1, 2, 0];
 var trame = [187, 187, 0, 0, 0, 0, 0, 0, 0];
 var commandToGetConfigurations = [187, 187, 1, 0, 0, 1, 1, 4, 0];
@@ -80,7 +91,7 @@ port.on('data', (data) => {
 port.on('open', function(res) {
   console.log('Port open');
   setInterval(() => {
-    writeAndDrain(commands[0]);
+    writeAndDrain(logInCommand);
   }, 1000);
 });
 
