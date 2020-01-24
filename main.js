@@ -55,7 +55,7 @@ var port = new SerialPort(
 const parser = port.pipe(new Readline());
 
 // sends data to the connected device via serial port
-function writeAndDrain(data, callback) {
+function writeAndDrain(data) {
   console.log('Port is open = ', port.isOpen, ' isReadable = ', port.readable);
   // flush data received but not read
   port.flush();
@@ -67,10 +67,15 @@ function writeAndDrain(data, callback) {
     } else {
       console.log(`drain and repeat write`);
       // waits until all output data has been transmitted to the serial port.
-      port.drain(callback);
+      port.drain((result) => {
+        console.log(`drain callback result: ${result}`);
+      });
     }
   });
 }
+data.on('data', (data) => {
+  console.log('Port on data: ', data);
+});
 
 parser.on('data', (data) => {
   console.log('Port on data: ', data);
@@ -79,7 +84,7 @@ parser.on('data', (data) => {
 // The open event is always emitted
 port.on('open', function(res) {
   console.log('Port open');
-  writeAndDrain(commands[0], null);
+  writeAndDrain(commands[0]);
 });
 
 setTimeout(() => {
