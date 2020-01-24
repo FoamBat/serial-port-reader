@@ -82,7 +82,9 @@ parser.on('data', console.log);
 // The open event is always emitted
 port.on('open', function(res) {
   console.log('Port open');
-  writeAndDrain(askdata);
+  setTimeout(() => {
+    writeAndDrain(askdata);
+  }, 500);
 });
 
 setTimeout(() => {
