@@ -27,15 +27,16 @@ var inverterSerialNumber = [49, 48, 48, 48, 50, 49, 50, 49, 49, 48, 49]; // 11 B
 var logIn = [187, 187, 0, 0, 0, 0, 0, 1, 12]; // 9 Bytes
 var logInCommand = logIn.concat(inverterSerialNumber);
 logInCommand[20] = 1;
-calculateChecksum(logInCommand);
+//calculateChecksum(logInCommand);
 console.log(`${logInCommand}  length = ${logInCommand.length}`);
 var askdata = [11, 187, 187, 1, 0, 0, 1, 1, 2, 0, 1, 123];
 
 var askForRegisters = [187, 187, 1, 0, 0, 1, 1, 2, 0];
+//calculateChecksum(askForRegisters);
 var trame = [187, 187, 0, 0, 0, 0, 0, 0, 0];
 var commandToGetConfigurations = [187, 187, 1, 0, 0, 1, 1, 4, 0];
 var pvOutputCom = [187, 187, 1, 0, 0, 1, 1, 2, 0];
-var commands = [trame, commandToGetConfigurations, askForRegisters];
+var commands = [logInCommand, askForRegisters];
 for (const command of commands) {
   calculateChecksum(command);
 }
@@ -90,14 +91,15 @@ port.on('data', (data) => {
 // The open event is always emitted
 port.on('open', function(res) {
   console.log('Port open');
+  writeAndDrain(commands[0]);
   setInterval(() => {
-    writeAndDrain(logInCommand);
+    writeAndDrain(commands[1]);
   }, 1000);
 });
 
-setTimeout(() => {
+/*setTimeout(() => {
   if (!port.isOpen) return;
   port.close(() => {
     console.log('Port closed!');
   });
-}, 120000);
+}, 120000);*/
