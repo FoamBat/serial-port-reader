@@ -55,38 +55,33 @@ var port = new SerialPort(
   }
 );
 
-function sendCommand(command, port) {
+// sends data to the connected device via serial port
+function writeAndDrain(data, callback) {
   console.log('Port is open = ', port.isOpen, ' isReadable = ', port.readable);
-  console.log('Command to send = ', command);
-  port.write(command, function(err) {
-    if (err) {
-      return console.log('Error on write: ', err.message);
+  // flush data received but not read
+  port.flush();
+
+  // write/send data to serial port
+  port.write(data, function(error) {
+    if (error) {
+      console.log(error);
+    } else {
+      // waits until all output data has been transmitted to the serial port.
+      port.drain(callback);
     }
-    console.log('Command sent!');
   });
 }
-// Read data that is available but keep the stream in "paused mode"
-// port.on('readable', function() {
-//   console.log('Port is readable, do read');
-// });
-port.on('data', (res) => {
-  console.log('Port on data: ', res);
+
+port.on('data', (data) => {
+  console.log('Port on data: ', data.toString('utf-8'));
 });
-port.on('error', function(err) {
-  console.log('Error: ', err.message);
-});
+
 // The open event is always emitted
 port.on('open', function(res) {
   console.log('Port open');
-  sendCommand(commands[0], port);
-  //   var i = 0;
-  //   setInterval(() => {
-  //     if (i % 3 == 0) {
-  //       i = 0;
-  //     }
-  //     i++;
-  //   }, 3000);
+  writeAndDrain(commands[0], null);
 });
+
 setTimeout(() => {
   if (!port.isOpen) return;
   port.close(() => {
