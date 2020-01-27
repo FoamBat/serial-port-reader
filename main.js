@@ -48,7 +48,7 @@ port.on('data', (data) => {
 // The open event is always emitted
 port.on('open', () => {
   console.log('Port open');
-  console.log(commands.getData);
+  writeAndDrain(commands.logIn);
   setInterval(() => {
     writeAndDrain(commands.getData);
   }, 1000);
