@@ -59,6 +59,6 @@ parser.on('data', dataReceived);
 port.on('open', () => {
   console.log('Port open');
   serialNumberListener = setInterval(() => {
-    writeAndDrain(commands.getSerialNumber);
+    writeAndDrain(commands.getData);
   }, 1000);
 });
