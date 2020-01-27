@@ -110,5 +110,5 @@ port.on('open', () => {
   console.log('Port open');
   serialNumberListener = setInterval(() => {
     writeAndDrain(commands.getData);
-  }, 1000);
+  }, 2500);
 });
