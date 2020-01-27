@@ -31,7 +31,7 @@ const port = new SerialPort(
     if (error) console.log(`connection with serialport COM1 failed: ${error}`);
   }
 );
-const parser = port.pipe(new Readline());
+const parser = port.pipe(new ByteLength({ length: 16 }));
 // sends data to the connected device via serial port
 function writeAndDrain(data) {
   console.log(data);
