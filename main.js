@@ -1,7 +1,7 @@
 const SerialPort = require('serialport');
 const InterByteTimeout = require('@serialport/parser-inter-byte-timeout');
 const Readline = require('@serialport/parser-readline');
-
+const ByteLength = require('@serialport/parser-byte-length');
 const commands = require('./commands');
 
 var serialNumberListener;
