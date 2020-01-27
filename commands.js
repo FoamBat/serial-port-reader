@@ -7,7 +7,7 @@ function calculateChecksum(command) {
   }, 0);
   command[length] = checksum >> 8;
   command[length + 1] = checksum & 255;
-  console.log(command + ' len = ' + command.length);
+  //console.log(command + ' len = ' + command.length);
   return command;
 }
 
@@ -21,4 +21,15 @@ const commands = {
   )
 };
 
+console.log(
+  `before checksum: ${[187, 187, 0, 0, 0, 0, 0, 1, 12].concat(
+    inverterSerialNumber,
+    1
+  )}`
+);
+console.log(
+  `after checksum: ${calculateChecksum(
+    [187, 187, 0, 0, 0, 0, 0, 1, 12].concat(inverterSerialNumber, 1)
+  )}`
+);
 module.exports = commands;
