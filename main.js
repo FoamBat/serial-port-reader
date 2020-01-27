@@ -42,14 +42,10 @@ function writeAndDrain(data) {
     }
   });
 }
-parser.on('data', (data) => {
+function dataReceived(data) {
   console.log(data);
-});
-// port.on('data', (data) => {
-//   console.log(typeof data, ' ', JSON.stringify(data));
-//   console.log(data);
-//   //console.log('Port on data: ', hexToDecimal(data));
-// });
+}
+parser.on('data', dataReceived);
 
 // The open event is always emitted
 port.on('open', () => {
