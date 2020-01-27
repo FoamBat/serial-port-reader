@@ -50,7 +50,10 @@ function dataReceived(data) {
   console.log(JSON.stringify(data));
   let arr = [...data];
   console.log(arr);
-  //(trame[9+i*2]<<8)+trame[10+i*2]
+  for (let i = 0; i < 21; i++) {
+    let data = (arr[9 + i * 2] << 8) + arr[10 + i * 2];
+    console.log(`data parameters ${data} \n`);
+  }
   clearInterval(serialNumberListener);
   /*setInterval(() => {
     writeAndDrain(commands.logIn);
