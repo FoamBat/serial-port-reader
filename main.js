@@ -3,6 +3,8 @@ const InterByteTimeout = require('@serialport/parser-inter-byte-timeout');
 
 const commands = require('./commands');
 
+var serialNumberListener;
+
 function hexToDecimal(data) {
   let ss = '';
   data.split(' ').forEach((hexDigit) => {
@@ -54,7 +56,7 @@ parser.on('data', dataReceived);
 // The open event is always emitted
 port.on('open', () => {
   console.log('Port open');
-  setInterval(() => {
+  serialNumberListener = setInterval(() => {
     writeAndDrain(commands.getSerialNumber);
-  });
+  }, 1000);
 });
