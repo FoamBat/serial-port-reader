@@ -44,8 +44,8 @@ function writeAndDrain(data) {
   });
 }
 port.on('data', (data) => {
-  console.log(typeof data, ' ', data);
-  console.log('Port on data: ', hexToDecimal(data));
+  console.log(typeof data, ' ', JSON.stringify(data));
+  //console.log('Port on data: ', hexToDecimal(data));
 });
 
 // The open event is always emitted
