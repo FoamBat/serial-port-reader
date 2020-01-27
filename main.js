@@ -3,7 +3,63 @@ const InterByteTimeout = require('@serialport/parser-inter-byte-timeout');
 const Readline = require('@serialport/parser-readline');
 const ByteLength = require('@serialport/parser-byte-length');
 const commands = require('./commands');
+const fs = require('fs');
 
+var data = [
+  187,
+  187,
+  0,
+  0,
+  0,
+  0,
+  0,
+  128,
+  11,
+  49,
+  48,
+  48,
+  48,
+  49,
+  56,
+  53,
+  49,
+  49,
+  48,
+  49,
+  4,
+  35,
+  187,
+  187,
+  0,
+  0,
+  0,
+  0,
+  0,
+  128,
+  11,
+  49,
+  48,
+  48,
+  48,
+  49,
+  56,
+  53,
+  49,
+  49,
+  48,
+  49,
+  4,
+  35,
+  187,
+  187,
+  0,
+  0,
+  0,
+  0,
+  0,
+  128,
+  11
+];
 const dataLabels = [
   'Heat Sink Temperature (C)',
   0.1,
@@ -48,20 +104,10 @@ const dataLabels = [
   'GZ F-Value Ohm (Ohms)',
   0.001
 ];
+for (let index = 0; index < 5; index++) {
+  dataReceived(data);
+}
 var serialNumberListener;
-
-function hexToDecimal(data) {
-  let ss = '';
-  data.split(' ').forEach((hexDigit) => {
-    ss += parseInt(hexDigit, 16);
-  });
-  return ss;
-}
-class Inverter {
-  constructor(serialNumber) {
-    this.serialNumber = serialNumber;
-  }
-}
 
 const port = new SerialPort(
   'COM1',
@@ -91,13 +137,18 @@ function writeAndDrain(data) {
   });
 }
 function dataReceived(data) {
-  console.log(JSON.stringify(data));
   let arr = [...data];
-  console.log(arr);
+  let object = {};
+  object['Date Time'] = new Date();
   for (let i = 0; i < 21; i++) {
-    let data = (arr[9 + i * 2] << 8) + arr[10 + i * 2];
-    console.log(`${dataLabels[i * 2]} - ${data * dataLabels[i * 2 + 1]}`);
+    let temp = (arr[9 + i * 2] << 8) + arr[10 + i * 2];
+    object[dataLabels[i * 2]] = temp * dataLabels[i * 2 + 1];
+    //console.log(`${dataLabels[i * 2]} - ${data * dataLabels[i * 2 + 1]}`);
   }
+  fs.appendFile('./data/data.json', JSON.stringify(object, null, 2), (err) => {
+    if (err) throw err;
+    console.log('Data written to file');
+  });
   //clearInterval(serialNumberListener);
   /*setInterval(() => {
     writeAndDrain(commands.logIn);
