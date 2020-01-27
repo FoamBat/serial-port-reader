@@ -49,9 +49,9 @@ function writeAndDrain(data) {
 function dataReceived(data) {
   console.log(data);
   clearInterval(serialNumberListener);
-  setInterval(() => {
+  /*setInterval(() => {
     writeAndDrain(commands.logIn);
-  }, 1000);
+  }, 1000);*/
 }
 parser.on('data', dataReceived);
 
@@ -59,6 +59,6 @@ parser.on('data', dataReceived);
 port.on('open', () => {
   console.log('Port open');
   serialNumberListener = setInterval(() => {
-    writeAndDrain(commands.getSerialNumber);
+    writeAndDrain(commands.logIn);
   }, 1000);
 });
