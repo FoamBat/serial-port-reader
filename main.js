@@ -50,6 +50,6 @@ port.on('open', () => {
   console.log('Port open');
   writeAndDrain(commands.logIn);
   setInterval(() => {
-    writeAndDrain(commands.getData);
+    writeAndDrain(commands.logIn);
   }, 1000);
 });
