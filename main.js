@@ -4,6 +4,29 @@ const Readline = require('@serialport/parser-readline');
 const ByteLength = require('@serialport/parser-byte-length');
 const commands = require('./commands');
 
+const dataLabels = [
+  'Heat Sink Temperature',
+  'Panel 1 Voltage',
+  'Panel 1 DC Current',
+  'Working Hours',
+  'Working Hours',
+  'Operating Mode',
+  'Tmp F',
+  'PV1 F',
+  'GFCI F',
+  'Fault Code High',
+  'Fault Code Low',
+  'Line Current',
+  'Line Voltage',
+  'AC Frequency',
+  'AC Power',
+  'Zac',
+  'Accumulated Energy',
+  'Accumulated Energy',
+  'GFCI F',
+  'GFCI F',
+  'GZ F'
+];
 var serialNumberListener;
 
 function hexToDecimal(data) {
@@ -52,7 +75,7 @@ function dataReceived(data) {
   console.log(arr);
   for (let i = 0; i < 21; i++) {
     let data = (arr[9 + i * 2] << 8) + arr[10 + i * 2];
-    console.log(`data parameters ${data} \n`);
+    console.log(`${dataLabels[i]} - ${data} \n`);
   }
   clearInterval(serialNumberListener);
   /*setInterval(() => {
