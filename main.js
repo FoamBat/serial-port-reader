@@ -48,8 +48,8 @@ port.on('data', (data) => {
 // The open event is always emitted
 port.on('open', () => {
   console.log('Port open');
-  console.log(commands.getSerialNumber);
+  console.log(commands.getData);
   setInterval(() => {
-    writeAndDrain(commands.getSerialNumber);
+    writeAndDrain(commands.getData);
   }, 1000);
 });
