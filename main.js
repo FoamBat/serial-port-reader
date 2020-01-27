@@ -42,7 +42,9 @@ function writeAndDrain(data) {
     }
   });
 }
-parser.on('data', console.log);
+parser.on('data', (data) => {
+  console.log(data);
+});
 // port.on('data', (data) => {
 //   console.log(typeof data, ' ', JSON.stringify(data));
 //   console.log(data);
@@ -54,6 +56,6 @@ port.on('open', () => {
   console.log('Port open');
   writeAndDrain(commands.getSerialNumber);
   setInterval(() => {
-    writeAndDrain(commands.logIn);
+    writeAndDrain(commands.getSerialNumber);
   }, 1000);
 });
