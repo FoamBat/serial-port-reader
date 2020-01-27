@@ -30,7 +30,7 @@ const port = new SerialPort(
     if (error) console.log(`connection with serialport COM1 failed: ${error}`);
   }
 );
-const parser = port.pipe(new InterByteTimeout({ interval: 30 }));
+const parser = port.pipe(new InterByteTimeout({ interval: 100 }));
 // sends data to the connected device via serial port
 function writeAndDrain(data) {
   console.log(data);
