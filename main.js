@@ -43,7 +43,7 @@ function writeAndDrain(data) {
 }
 port.on('data', (data) => {
   console.log(typeof data, ' ', JSON.stringify(data));
-  console.log(data.getOwnProperties());
+  console.log(data.entries());
   //console.log('Port on data: ', hexToDecimal(data));
 });
 
