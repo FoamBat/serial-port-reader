@@ -98,7 +98,7 @@ function dataReceived(data) {
     let data = (arr[9 + i * 2] << 8) + arr[10 + i * 2];
     console.log(`${dataLabels[i * 2]} - ${data * dataLabels[i * 2 + 1]}`);
   }
-  clearInterval(serialNumberListener);
+  //clearInterval(serialNumberListener);
   /*setInterval(() => {
     writeAndDrain(commands.logIn);
   }, 1000);*/
