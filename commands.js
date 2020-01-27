@@ -8,8 +8,6 @@ function calculateChecksum(command) {
   console.log(checksum);
   command[length] = checksum >> 8;
   command[length + 1] = checksum & 255;
-
-  return checksum;
 }
 
 const commands = {
@@ -21,5 +19,5 @@ const commands = {
     [187, 187, 0, 0, 0, 0, 0, 1, 12].concat(inverterSerialNumber, 1)
   )
 };
-
+commands;
 module.exports = commands;
