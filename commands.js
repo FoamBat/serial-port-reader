@@ -5,7 +5,6 @@ function calculateChecksum(command) {
   const checksum = command.reduce((acc, val) => {
     return acc + val;
   }, 0);
-  console.log(checksum);
   command[length] = checksum >> 8;
   command[length + 1] = checksum & 255;
 }
