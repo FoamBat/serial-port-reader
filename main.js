@@ -1,5 +1,5 @@
 const SerialPort = require('serialport');
-const ByteLength = require('@serialport/parser-byte-length');
+const InterByteTimeout = require('@serialport/parser-inter-byte-timeout');
 
 const commands = require('./commands');
 
@@ -28,7 +28,7 @@ const port = new SerialPort(
     if (error) console.log(`connection with serialport COM1 failed: ${error}`);
   }
 );
-const parser = port.pipe(new ByteLength({ length: 8 }));
+const parser = port.pipe(new InterByteTimeout({ interval: 30 }));
 // sends data to the connected device via serial port
 function writeAndDrain(data) {
   port.flush();

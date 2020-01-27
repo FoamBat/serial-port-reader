@@ -18,6 +18,7 @@
   "homepage": "https://github.com/PopPushOut/serial-port-reader#readme",
   "dependencies": {
     "@serialport/parser-byte-length": "^8.0.6",
+    "@serialport/parser-inter-byte-timeout": "^8.0.6",
     "@serialport/parser-readline": "^8.0.6",
     "serialport": "^8.0.6"
   }
