@@ -30,8 +30,6 @@ const port = new SerialPort(
 
 // sends data to the connected device via serial port
 function writeAndDrain(data) {
-  console.log(data);
-
   port.flush();
 
   port.write(data, function(error) {
@@ -45,7 +43,7 @@ function writeAndDrain(data) {
 }
 port.on('data', (data) => {
   console.log(typeof data, ' ', JSON.stringify(data));
-  console.log(Buffer.from(data.data));
+  console.log(data.data);
   //console.log('Port on data: ', hexToDecimal(data));
 });
 
