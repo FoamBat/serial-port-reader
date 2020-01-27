@@ -1,4 +1,5 @@
 const SerialPort = require('serialport');
+const ByteLength = require('@serialport/parser-byte-length');
 
 const commands = require('./commands');
 
@@ -27,7 +28,7 @@ const port = new SerialPort(
     if (error) console.log(`connection with serialport COM1 failed: ${error}`);
   }
 );
-
+const parser = port.pipe(new ByteLength({ length: 8 }));
 // sends data to the connected device via serial port
 function writeAndDrain(data) {
   port.flush();
@@ -41,11 +42,12 @@ function writeAndDrain(data) {
     }
   });
 }
-port.on('data', (data) => {
-  console.log(typeof data, ' ', JSON.stringify(data));
-  console.log(data);
-  //console.log('Port on data: ', hexToDecimal(data));
-});
+parser.on('data', console.log);
+// port.on('data', (data) => {
+//   console.log(typeof data, ' ', JSON.stringify(data));
+//   console.log(data);
+//   //console.log('Port on data: ', hexToDecimal(data));
+// });
 
 // The open event is always emitted
 port.on('open', () => {
