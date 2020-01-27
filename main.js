@@ -33,6 +33,7 @@ const port = new SerialPort(
 const parser = port.pipe(new InterByteTimeout({ interval: 30 }));
 // sends data to the connected device via serial port
 function writeAndDrain(data) {
+  console.log(data);
   port.flush();
 
   port.write(data, function(error) {
