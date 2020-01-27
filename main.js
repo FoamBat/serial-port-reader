@@ -54,7 +54,7 @@ parser.on('data', dataReceived);
 // The open event is always emitted
 port.on('open', () => {
   console.log('Port open');
-  var serialNumberListener = setInterval(() => {
+  setInterval(() => {
     writeAndDrain(commands.getSerialNumber);
   });
 });
