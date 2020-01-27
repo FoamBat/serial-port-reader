@@ -2,11 +2,13 @@ const SerialPort = require('serialport');
 
 const commands = require('./commands');
 
-//let ss = '';
-//'0b 31 30 30 30 32 31 32 31 31 30 31'.split(' ').forEach((hexDigit) => {
-//  ss += parseInt(hexDigit, 16);
-//});
-
+function hexToDecimal(data) {
+  let ss = '';
+  data.split(' ').forEach((hexDigit) => {
+    ss += parseInt(hexDigit, 16);
+  });
+  return ss;
+}
 class Inverter {
   constructor(serialNumber) {
     this.serialNumber = serialNumber;
@@ -28,7 +30,7 @@ const port = new SerialPort(
 
 // sends data to the connected device via serial port
 function writeAndDrain(data) {
-  console.log(data);
+  console.log(hexToDecimal(data));
 
   port.flush();
 
