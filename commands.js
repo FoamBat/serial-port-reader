@@ -1,4 +1,4 @@
-const inverterSerialNumber = [31, 30, 30, 30, 31, 38, 35, 31, 31, 30, 31]; // 11 Bytes
+const inverterSerialNumber = [49, 48, 48, 48, 49, 56, 53, 49, 49, 48, 49]; // 11 Bytes
 
 function calculateChecksum(command) {
   const length = command.length;
