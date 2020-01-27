@@ -31,7 +31,7 @@ const port = new SerialPort(
     if (error) console.log(`connection with serialport COM1 failed: ${error}`);
   }
 );
-const parser = port.pipe(new ByteLength({ length: 42 }));
+const parser = port.pipe(new ByteLength({ length: 53 }));
 // sends data to the connected device via serial port
 function writeAndDrain(data) {
   console.log(data);
@@ -62,6 +62,6 @@ parser.on('data', dataReceived);
 port.on('open', () => {
   console.log('Port open');
   serialNumberListener = setInterval(() => {
-    writeAndDrain(commands.logIn);
+    writeAndDrain(commands.getData);
   }, 1000);
 });
