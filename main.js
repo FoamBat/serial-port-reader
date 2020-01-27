@@ -47,7 +47,7 @@ function writeAndDrain(data) {
   });
 }
 function dataReceived(data) {
-  console.log(data);
+  console.log(JSON.stringify(data));
   clearInterval(serialNumberListener);
   /*setInterval(() => {
     writeAndDrain(commands.logIn);
@@ -59,6 +59,6 @@ parser.on('data', dataReceived);
 port.on('open', () => {
   console.log('Port open');
   serialNumberListener = setInterval(() => {
-    writeAndDrain(commands.getData);
+    writeAndDrain(commands.serialNumber);
   }, 1000);
 });
