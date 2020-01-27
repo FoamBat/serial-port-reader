@@ -104,9 +104,7 @@ const dataLabels = [
   'GZ F-Value Ohm (Ohms)',
   0.001
 ];
-for (let index = 0; index < 5; index++) {
-  dataReceived(data);
-}
+
 var serialNumberListener;
 
 const port = new SerialPort(
@@ -145,10 +143,14 @@ function dataReceived(data) {
     object[dataLabels[i * 2]] = temp * dataLabels[i * 2 + 1];
     //console.log(`${dataLabels[i * 2]} - ${data * dataLabels[i * 2 + 1]}`);
   }
-  fs.appendFile('./data/data.json', JSON.stringify(object, null, 2), (err) => {
-    if (err) throw err;
-    console.log('Data written to file');
-  });
+  fs.appendFile(
+    './data/data.json',
+    JSON.stringify(object, null, 2) + ',\n',
+    (err) => {
+      if (err) throw err;
+      console.log('Data written to file');
+    }
+  );
   //clearInterval(serialNumberListener);
   /*setInterval(() => {
     writeAndDrain(commands.logIn);
