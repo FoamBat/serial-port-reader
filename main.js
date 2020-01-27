@@ -122,7 +122,7 @@ const port = new SerialPort(
 const parser = port.pipe(new ByteLength({ length: 53 }));
 // sends data to the connected device via serial port
 function writeAndDrain(data) {
-  console.log(data);
+  //console.log(data);
   port.flush();
 
   port.write(data, function(error) {
@@ -163,5 +163,5 @@ port.on('open', () => {
   console.log('Port open');
   serialNumberListener = setInterval(() => {
     writeAndDrain(commands.getData);
-  }, 2500);
+  }, 60000);
 });
