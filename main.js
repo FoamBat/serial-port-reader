@@ -44,14 +44,17 @@ function writeAndDrain(data) {
 }
 function dataReceived(data) {
   console.log(data);
+  clearInterval(serialNumberListener);
+  setInterval(() => {
+    writeAndDrain(commands.logIn);
+  }, 1000);
 }
 parser.on('data', dataReceived);
 
 // The open event is always emitted
 port.on('open', () => {
   console.log('Port open');
-  writeAndDrain(commands.getSerialNumber);
-  setInterval(() => {
+  var serialNumberListener = setInterval(() => {
     writeAndDrain(commands.getSerialNumber);
-  }, 1000);
+  });
 });
