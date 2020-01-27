@@ -54,6 +54,6 @@ port.on('open', () => {
   console.log('Port open');
   writeAndDrain(commands.getSerialNumber);
   setInterval(() => {
-    writeAndDrain(commands.getSerialNumber);
+    writeAndDrain(commands.logIn);
   }, 1000);
 });
