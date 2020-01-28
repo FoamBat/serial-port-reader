@@ -135,6 +135,7 @@ function writeAndDrain(data) {
   });
 }
 function dataReceived(data) {
+  console.log(data);
   let arr = [...data];
   let object = {};
   object['Date Time'] = new Date();
@@ -160,8 +161,8 @@ parser.on('data', dataReceived);
 
 // The open event is always emitted
 port.on('open', () => {
-  console.log('Port open');
+  console.log('Port open = ', port.isOpen, ' port writable ', port.writable);
   serialNumberListener = setInterval(() => {
-    writeAndDrain(commands.getData);
-  }, 60000);
+    writeAndDrain(commands.logIn);
+  }, 1000);
 });
