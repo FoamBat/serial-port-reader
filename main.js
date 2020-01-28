@@ -164,15 +164,21 @@ function dataReceived(data) {
   dataLength = hexByteDataArr.length;
   console.log(data.length);
   if (dataLength === 11) {
-    console.log(`Serial Number received - ${hexByteDataArr}`);
+    console.log(
+      `${new Date().toLocaleString()} Serial Number received - ${hexByteDataArr}`
+    );
     eventEmitter.emit('serial_number');
   }
   if (dataLength === 23) {
-    console.log(`Log In received - ${hexByteDataArr}`);
+    console.log(
+      `${new Date().toLocaleString()} Log In received - ${hexByteDataArr}`
+    );
     eventEmitter.emit('log_in');
   }
   if (dataLength === 53) {
-    console.log(`Data From Inverter received - ${hexByteDataArr}`);
+    console.log(
+      `${new Date().toLocaleString()} Data From Inverter received - ${hexByteDataArr}`
+    );
     eventEmitter.emit('data');
     parseData(hexByteDataArr);
   }
@@ -186,7 +192,7 @@ port.on('open', () => {
 
   serialPortListener = setInterval(() => {
     writeAndDrain(commands.getSerialNumber);
-  }, 3000);
+  }, 600000);
 
   eventEmitter.on('serial_port', function() {
     clearInterval(serialPortListener);
@@ -194,7 +200,7 @@ port.on('open', () => {
 
     logInListener = setInterval(() => {
       writeAndDrain(commands.logIn);
-    }, 3000);
+    }, 600000);
   });
 
   // log in to inverter received, start asking data from inverter
@@ -204,12 +210,12 @@ port.on('open', () => {
 
     dataListener = setInterval(() => {
       writeAndDrain(commands.getData);
-    }, 3000);
+    }, 200000);
   });
 
   // data event received, check when was the last time data was received from inverter
   eventEmitter.on('data', function() {
     dataReadTimestamp = new Date().toLocaleString();
-    console.log('data read event fired!');
+    console.log(`${new Date().toLocaleString()} data read event fired!`);
   });
 });
