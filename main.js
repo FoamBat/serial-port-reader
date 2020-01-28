@@ -124,13 +124,9 @@ const serialNumberParser = port.pipe(new ByteLength({ length: 11 }));
 const logInParser = port.pipe(new ByteLength({ length: 23 }));
 const dataParser = port.pipe(new ByteLength({ length: 53 }));
 
-//Create an event handler:
-var myEventHandler = function() {
-  console.log('I hear a scream!');
-};
-
 // sends data to the connected device via serial port
 function writeAndDrain(data) {
+  console.log(`Data sent to inverter: ${data}`);
   port.flush();
   port.write(data, function(error) {
     if (error) {
