@@ -1,6 +1,7 @@
 const SerialPort = require('serialport');
-const InterByteTimeout = require('@serialport/parser-inter-byte-timeout');
-const Readline = require('@serialport/parser-readline');
+const events = require('events');
+
+const eventEmitter = new events.EventEmitter();
 const ByteLength = require('@serialport/parser-byte-length');
 const commands = require('./commands');
 const fs = require('fs');
@@ -124,6 +125,14 @@ const serialNumberParser = port.pipe(new ByteLength({ length: 11 }));
 const logInParser = port.pipe(new ByteLength({ length: 23 }));
 const dataParser = port.pipe(new ByteLength({ length: 53 }));
 
+//Create an event handler:
+var myEventHandler = function() {
+  console.log('I hear a scream!');
+};
+
+//Assign the event handler to an event:
+eventEmitter.on('scream', myEventHandler);
+
 // sends data to the connected device via serial port
 function writeAndDrain(data) {
   port.flush();
@@ -158,25 +167,31 @@ function appendDataToFile(data) {
   );
 }
 function dataReceived(data) {
-  promise = new Promise(function(resolve, reject) {
-    console.log(data.length);
-    if (data.length === 11) {
-      resolve({ data: data, message: 'Serial Number received' });
-    }
-    if (data.length === 53) {
-      resolve({ data: data, message: 'Data received' });
-    }
-  });
+  console.log(data.length);
+  if (data.length === 11) {
+    console.log(`'Serial Number received' - ${data}`);
+    eventEmitter.emit('log_in');
+  }
+  if (data.length === 53) {
+    eventEmitter.emit('data');
+  }
 }
+
 logInParser.on('data', dataReceived);
 
 // The open event is always emitted
 port.on('open', () => {
-  console.log('Port open = ', port.isOpen, ' port writable ', port.writable);
-  promise.then((result) => {
-    console.log(result);
+  console.log('Port open = ', port.isOpen);
+
+  // data event received, check when was the last time data was received from inverter
+  eventEmitter.on('data', function() {
+    console.log('data read event fired!');
   });
-  logInListener = setInterval(() => {
-    writeAndDrain(commands.SerialPort);
-  }, 3000);
+  // log in to inverter received, start asking data from inverter
+  eventEmitter.on('log_in', function() {
+    console.log('data read event fired!');
+    dataListener = setInterval(() => {
+      writeAndDrain(commands.SerialPort);
+    }, 3000);
+  });
 });

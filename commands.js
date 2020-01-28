@@ -21,15 +21,4 @@ const commands = {
   )
 };
 
-console.log(
-  `before checksum: ${[187, 187, 0, 0, 0, 0, 0, 1, 12].concat(
-    inverterSerialNumber,
-    1
-  )}`
-);
-console.log(
-  `after checksum: ${calculateChecksum(
-    [187, 187, 0, 0, 0, 0, 0, 1, 12].concat(inverterSerialNumber, 1)
-  )}`
-);
 module.exports = commands;
