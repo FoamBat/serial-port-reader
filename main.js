@@ -120,7 +120,6 @@ const port = new SerialPort(
     if (error) console.log(`connection with serialport COM1 failed: ${error}`);
   }
 );
-var promise;
 const serialNumberParser = port.pipe(new ByteLength({ length: 11 }));
 const logInParser = port.pipe(new ByteLength({ length: 23 }));
 const dataParser = port.pipe(new ByteLength({ length: 53 }));
@@ -129,9 +128,6 @@ const dataParser = port.pipe(new ByteLength({ length: 53 }));
 var myEventHandler = function() {
   console.log('I hear a scream!');
 };
-
-//Assign the event handler to an event:
-eventEmitter.on('scream', myEventHandler);
 
 // sends data to the connected device via serial port
 function writeAndDrain(data) {
@@ -182,6 +178,9 @@ logInParser.on('data', dataReceived);
 // The open event is always emitted
 port.on('open', () => {
   console.log('Port open = ', port.isOpen);
+  dataListener = setInterval(() => {
+    writeAndDrain(commands.getSerialNumber);
+  }, 3000);
 
   // data event received, check when was the last time data was received from inverter
   eventEmitter.on('data', function() {
@@ -191,7 +190,7 @@ port.on('open', () => {
   eventEmitter.on('log_in', function() {
     console.log('data read event fired!');
     dataListener = setInterval(() => {
-      writeAndDrain(commands.SerialPort);
+      writeAndDrain(commands.getData);
     }, 3000);
   });
 });
