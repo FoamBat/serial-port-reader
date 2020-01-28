@@ -119,12 +119,14 @@ const port = new SerialPort(
     if (error) console.log(`connection with serialport COM1 failed: ${error}`);
   }
 );
-const parser = port.pipe(new ByteLength({ length: 53 }));
+
+const serialNumberParser = port.pipe(new ByteLength({ length: 11 }));
+const logInParser = port.pipe(new ByteLength({ length: 23 }));
+const dataParser = port.pipe(new ByteLength({ length: 53 }));
+
 // sends data to the connected device via serial port
 function writeAndDrain(data) {
-  //console.log(data);
   port.flush();
-
   port.write(data, function(error) {
     if (error) {
       console.log(error);
@@ -134,35 +136,47 @@ function writeAndDrain(data) {
     }
   });
 }
-function dataReceived(data) {
-  console.log(data);
+function parseData() {
   let arr = [...data];
   let object = {};
   object['Date Time'] = new Date();
   for (let i = 0; i < 21; i++) {
     let temp = (arr[9 + i * 2] << 8) + arr[10 + i * 2];
     object[dataLabels[i * 2]] = temp * dataLabels[i * 2 + 1];
-    //console.log(`${dataLabels[i * 2]} - ${data * dataLabels[i * 2 + 1]}`);
+    console.log(`${dataLabels[i * 2]} - ${data * dataLabels[i * 2 + 1]}`);
   }
+  return object;
+}
+function appendDataToFile(data) {
   fs.appendFile(
     './data/data.json',
-    JSON.stringify(object, null, 2) + ',\n',
+    JSON.stringify(data, null, 2) + ',\n',
     (err) => {
       if (err) throw err;
       console.log('Data written to file');
     }
   );
-  //clearInterval(serialNumberListener);
-  /*setInterval(() => {
-    writeAndDrain(commands.logIn);
-  }, 1000);*/
 }
-parser.on('data', dataReceived);
+function dataReceived(data) {
+  var promise = new Promise(function(resolve, reject) {
+    console.log(data.length);
+    if (data.length === 11) {
+      resolve({ data: data, message: 'Serial Number received' });
+    }
+    if (data.length === 53) {
+      resolve({ data: data, message: 'Data received' });
+    }
+  });
+}
+logInParser.on('data', dataReceived);
 
 // The open event is always emitted
 port.on('open', () => {
   console.log('Port open = ', port.isOpen, ' port writable ', port.writable);
-  serialNumberListener = setInterval(() => {
-    writeAndDrain(commands.logIn);
-  }, 1000);
+  promise.then((result) => {
+    console.log(result);
+  });
+  logInListener = setInterval(() => {
+    writeAndDrain(commands.SerialPort);
+  }, 3000);
 });
