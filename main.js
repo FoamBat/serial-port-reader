@@ -119,7 +119,7 @@ const port = new SerialPort(
     if (error) console.log(`connection with serialport COM1 failed: ${error}`);
   }
 );
-
+var promise;
 const serialNumberParser = port.pipe(new ByteLength({ length: 11 }));
 const logInParser = port.pipe(new ByteLength({ length: 23 }));
 const dataParser = port.pipe(new ByteLength({ length: 53 }));
@@ -158,7 +158,7 @@ function appendDataToFile(data) {
   );
 }
 function dataReceived(data) {
-  var promise = new Promise(function(resolve, reject) {
+  promise = new Promise(function(resolve, reject) {
     console.log(data.length);
     if (data.length === 11) {
       resolve({ data: data, message: 'Serial Number received' });
