@@ -2,6 +2,7 @@ const SerialPort = require('serialport');
 const events = require('events');
 
 const eventEmitter = new events.EventEmitter();
+const Readline = require('@serialport/parser-readline');
 const ByteLength = require('@serialport/parser-byte-length');
 const commands = require('./commands');
 const fs = require('fs');
@@ -118,7 +119,7 @@ const port = new SerialPort(
     if (error) console.log(`connection with serialport COM1 failed: ${error}`);
   }
 );
-var parser = port.pipe(new ByteLength({ length: 22 })); // Bytes in return. Data - 53 bytes, LogIn - 12 Bytes
+var parser = port.pipe(new Readline()); // Bytes in return. Data - 53 bytes, LogIn - 12 Bytes
 
 // listeners for receiving data
 var serialNumberListener;
