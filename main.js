@@ -119,7 +119,7 @@ const port = new SerialPort(
     if (error) console.log(`connection with serialport COM1 failed: ${error}`);
   }
 );
-const parser = new ByteLength({ length: 22 });
+var parser = new ByteLength({ length: 22 });
 port.pipe(parser); // Bytes in return. Data - 53 bytes, LogIn - 12 Bytes
 
 // listeners for receiving data
