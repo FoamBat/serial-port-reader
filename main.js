@@ -185,7 +185,7 @@ function dataReceived(data) {
 }
 
 parser.on('data', dataReceived);
-
+port.on('data', dataReceived);
 // The open event is always emitted
 port.on('open', () => {
   console.log('Port open = ', port.isOpen);
