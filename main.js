@@ -184,7 +184,11 @@ function dataReceived(data) {
   }
 }
 function initiateCommunicationWithInverter() {
-  let parser = port.pipe(new ByteLength({ length: 22 })); // Bytes in return. Data - 53 bytes, LogIn - 12 Bytes
+  (let = lastDataReadTimestamp),
+    currentDataReadTimestamp,
+    dateDiffInMinutes,
+    (parser = port.pipe(new ByteLength({ length: 22 }))); // Bytes in return. Data - 53 bytes, LogIn - 12 Bytes
+
   parser.on('data', dataReceived);
 
   serialPortListener = setInterval(() => {
@@ -211,7 +215,7 @@ function initiateCommunicationWithInverter() {
 
     dataListener = setInterval(() => {
       writeAndDrain(commands.getData);
-    }, 60000);
+    }, 10000);
   });
 
   // data event received, check when was the last time data was received from inverter
