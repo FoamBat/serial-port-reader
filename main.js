@@ -118,7 +118,7 @@ const port = new SerialPort(
     if (error) console.log(`connection with serialport COM1 failed: ${error}`);
   }
 );
-let parser = port.pipe(new ByteLength({ length: 11 })); // Bytes in return. Data - 53 bytes, LogIn - 23 Bytes
+let parser = port.pipe(new ByteLength({ length: 22 })); // Bytes in return. Data - 53 bytes, LogIn - 12 Bytes
 
 // listeners for receiving data
 var serialNumberListener;
@@ -163,13 +163,13 @@ function dataReceived(data) {
   let hexByteDataArr = [...data];
   dataLength = hexByteDataArr.length;
   console.log(data.length);
-  if (dataLength === 11) {
+  if (dataLength === 22) {
     console.log(
       `${new Date().toLocaleString()} Serial Number received - ${hexByteDataArr}`
     );
     eventEmitter.emit('serial_number');
   }
-  if (dataLength === 23) {
+  if (dataLength === 12) {
     console.log(
       `${new Date().toLocaleString()} Log In received - ${hexByteDataArr}`
     );
@@ -197,7 +197,7 @@ port.on('open', () => {
   eventEmitter.on('serial_number', function() {
     clearInterval(serialPortListener);
     port.unpipe();
-    parser = port.pipe(new ByteLength({ length: 23 }));
+    parser = port.pipe(new ByteLength({ length: 12 }));
 
     logInListener = setInterval(() => {
       writeAndDrain(commands.logIn);
