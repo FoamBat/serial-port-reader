@@ -211,7 +211,7 @@ port.on('open', () => {
   eventEmitter.on('log_in', function() {
     clearInterval(logInListener);
     port.unpipe();
-    port.pipe(new ByteLength({ length: 53 }));
+    parser = port.pipe(new ByteLength({ length: 53 }));
     parser.on('data', dataReceived);
 
     dataListener = setInterval(() => {
