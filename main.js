@@ -119,8 +119,6 @@ const port = new SerialPort(
     if (error) console.log(`connection with serialport COM1 failed: ${error}`);
   }
 );
-var parser = new ByteLength({ length: 22 });
-port.pipe(parser); // Bytes in return. Data - 53 bytes, LogIn - 12 Bytes
 
 // listeners for receiving data
 var serialNumberListener;
@@ -156,7 +154,7 @@ function parseData(arr) {
   for (let i = 0; i < 21; i++) {
     let temp = (arr[9 + i * 2] << 8) + arr[10 + i * 2];
     object[dataLabels[i * 2]] = temp * dataLabels[i * 2 + 1];
-    console.log(`${dataLabels[i * 2]} - ${data * dataLabels[i * 2 + 1]}`);
+    console.log(`${dataLabels[i * 2]} - ${temp * dataLabels[i * 2 + 1]}`);
   }
   appendDataToFile(object);
   return object;
@@ -185,12 +183,9 @@ function dataReceived(data) {
     parseData(hexByteDataArr);
   }
 }
-
-parser.on('data', dataReceived);
-
-// The open event is always emitted
-port.on('open', () => {
-  console.log('Port open = ', port.isOpen);
+function initiateCommunicationWithInverter() {
+  let parser = port.pipe(new ByteLength({ length: 22 })); // Bytes in return. Data - 53 bytes, LogIn - 12 Bytes
+  parser.on('data', dataReceived);
 
   serialPortListener = setInterval(() => {
     writeAndDrain(commands.getSerialNumber);
@@ -216,12 +211,22 @@ port.on('open', () => {
 
     dataListener = setInterval(() => {
       writeAndDrain(commands.getData);
-    }, 5000);
+    }, 60000);
   });
 
   // data event received, check when was the last time data was received from inverter
   eventEmitter.on('data', function() {
-    dataReadTimestamp = new Date().toLocaleString();
+    lastDataReadTimestamp =
+      currentDataReadTimestamp || new Date().toLocaleString();
+    currentDataReadTimestamp = new Date().toLocaleString();
+    dateDiffInMinutes =
+      (currentDataReadTimestamp - lastDataReadTimestamp) / (1000 * 60);
+    console.log(dateDiffInMinutes);
     console.log(`${new Date().toLocaleString()} data read event fired!`);
   });
+}
+// The open event is always emitted
+port.on('open', () => {
+  console.log('Port open = ', port.isOpen);
+  initiateCommunicationWithInverter();
 });
