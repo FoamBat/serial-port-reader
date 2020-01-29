@@ -220,9 +220,8 @@ function initiateCommunicationWithInverter() {
 
   // data event received, check when was the last time data was received from inverter
   eventEmitter.on('data', function() {
-    lastDataReadTimestamp =
-      currentDataReadTimestamp || new Date().toLocaleString();
-    currentDataReadTimestamp = new Date().toLocaleString();
+    lastDataReadTimestamp = currentDataReadTimestamp || new Date();
+    currentDataReadTimestamp = new Date();
     console.log(lastDataReadTimestamp + '  ' + currentDataReadTimestamp);
     dateDiffInMinutes =
       (currentDataReadTimestamp - lastDataReadTimestamp) / (1000 * 60);
