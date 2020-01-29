@@ -223,6 +223,7 @@ function initiateCommunicationWithInverter() {
     lastDataReadTimestamp =
       currentDataReadTimestamp || new Date().toLocaleString();
     currentDataReadTimestamp = new Date().toLocaleString();
+    console.log(lastDataReadTimestamp + '  ' + currentDataReadTimestamp);
     dateDiffInMinutes =
       (currentDataReadTimestamp - lastDataReadTimestamp) / (1000 * 60);
     console.log(dateDiffInMinutes);
