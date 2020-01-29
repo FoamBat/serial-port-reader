@@ -191,8 +191,8 @@ function initiateCommunicationWithInverter() {
   console.log(parser);
   parser.on('data', dataReceived);
 
-  serialPortListener = setInterval(() => {
-    writeAndDrain(commands.getSerialNumber);
+  logInListener = setInterval(() => {
+    writeAndDrain(commands.logIn);
   }, 2000);
 
   eventEmitter.on('serial_number', function() {
