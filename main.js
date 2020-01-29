@@ -200,6 +200,7 @@ port.on('open', () => {
     clearInterval(serialPortListener);
     port.unpipe();
     parser = port.pipe(new ByteLength({ length: 12 }));
+    parser.on('data', dataReceived);
 
     logInListener = setInterval(() => {
       writeAndDrain(commands.logIn);
@@ -211,6 +212,7 @@ port.on('open', () => {
     clearInterval(logInListener);
     port.unpipe();
     port.pipe(new ByteLength({ length: 53 }));
+    parser.on('data', dataReceived);
 
     dataListener = setInterval(() => {
       writeAndDrain(commands.getData);
