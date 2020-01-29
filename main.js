@@ -192,15 +192,15 @@ port.on('open', () => {
 
   serialPortListener = setInterval(() => {
     writeAndDrain(commands.getSerialNumber);
-  }, 600000);
+  }, 6000);
 
-  eventEmitter.on('serial_port', function() {
+  eventEmitter.on('serial_number', function() {
     clearInterval(serialPortListener);
     parser = port.pipe(new ByteLength({ length: 23 }));
 
     logInListener = setInterval(() => {
       writeAndDrain(commands.logIn);
-    }, 600000);
+    }, 6000);
   });
 
   // log in to inverter received, start asking data from inverter
@@ -210,7 +210,7 @@ port.on('open', () => {
 
     dataListener = setInterval(() => {
       writeAndDrain(commands.getData);
-    }, 200000);
+    }, 20000);
   });
 
   // data event received, check when was the last time data was received from inverter
