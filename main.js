@@ -198,7 +198,7 @@ port.on('open', () => {
     clearInterval(serialPortListener);
     port.unpipe();
     parser = port.pipe(new ByteLength({ length: 12 }));
-
+    parser.on('data', dataReceived);
     logInListener = setInterval(() => {
       writeAndDrain(commands.logIn);
     }, 6000);
@@ -208,7 +208,7 @@ port.on('open', () => {
   eventEmitter.on('log_in', function() {
     clearInterval(logInListener);
     port.unpipe();
-    parser = port.pipe(new ByteLength({ length: 53 }));
+    port.pipe(new ByteLength({ length: 53 }));
 
     dataListener = setInterval(() => {
       writeAndDrain(commands.getData);
