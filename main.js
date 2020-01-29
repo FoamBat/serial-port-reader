@@ -196,6 +196,7 @@ port.on('open', () => {
 
   eventEmitter.on('serial_number', function() {
     clearInterval(serialPortListener);
+    port.unpipe();
     parser = port.pipe(new ByteLength({ length: 23 }));
 
     logInListener = setInterval(() => {
@@ -206,6 +207,7 @@ port.on('open', () => {
   // log in to inverter received, start asking data from inverter
   eventEmitter.on('log_in', function() {
     clearInterval(logInListener);
+    port.unpipe();
     parser = port.pipe(new ByteLength({ length: 53 }));
 
     dataListener = setInterval(() => {
