@@ -184,10 +184,10 @@ function dataReceived(data) {
   }
 }
 function initiateCommunicationWithInverter() {
-  (let = lastDataReadTimestamp),
+  let lastDataReadTimestamp,
     currentDataReadTimestamp,
     dateDiffInMinutes,
-    (parser = port.pipe(new ByteLength({ length: 22 }))); // Bytes in return. Data - 53 bytes, LogIn - 12 Bytes
+    parser = port.pipe(new ByteLength({ length: 22 })); // Bytes in return. Data - 53 bytes, LogIn - 12 Bytes
 
   parser.on('data', dataReceived);
 
