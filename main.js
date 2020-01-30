@@ -145,18 +145,18 @@ class serialCommunicator extends EventEmitter {
     this.currentDataReadTimestamp;
     this.dateDiffInMinutes;
     this.listener;
-    this.port = port;
+    var port = port;
     this.parser = port.pipe(new ByteLength({ length: 12 }));
   }
   writeAndDrain(data) {
     console.log(`Data sent to inverter: ${data}`);
-    this.port.flush();
-    this.port.write(data, function(error) {
+    port.flush();
+    port.write(data, function(error) {
       if (error) {
         console.log(error);
       } else {
         // waits until all output data has been transmitted to the serial port.
-        this.port.drain(null);
+        port.drain(null);
       }
     });
   }
