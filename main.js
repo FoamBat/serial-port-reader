@@ -51,7 +51,7 @@ const dataLabels = [
   0.001
 ];
 
-const port = new SerialPort(
+let port = new SerialPort(
   'COM1',
   {
     baudRate: 9600,
