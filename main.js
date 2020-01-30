@@ -134,12 +134,11 @@ port.on('open', () => {
 
   function initNewCommunication(object) {
     let newCom = new serialCommunicator(port);
-    if (object) {
-      com = newCom;
-      com.startCommunication();
-    } else {
+    if (!object) {
       return newCom;
     }
+    com = newCom;
+    com.startCommunication();
   }
 
   com.on('log_in', function() {
