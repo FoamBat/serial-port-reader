@@ -2,66 +2,10 @@ const SerialPort = require('serialport');
 const events = require('events');
 
 const eventEmitter = new events.EventEmitter();
-const Readline = require('@serialport/parser-readline');
 const ByteLength = require('@serialport/parser-byte-length');
 const commands = require('./commands');
 const fs = require('fs');
 
-var data = [
-  187,
-  187,
-  0,
-  0,
-  0,
-  0,
-  0,
-  128,
-  11,
-  49,
-  48,
-  48,
-  48,
-  49,
-  56,
-  53,
-  49,
-  49,
-  48,
-  49,
-  4,
-  35,
-  187,
-  187,
-  0,
-  0,
-  0,
-  0,
-  0,
-  128,
-  11,
-  49,
-  48,
-  48,
-  48,
-  49,
-  56,
-  53,
-  49,
-  49,
-  48,
-  49,
-  4,
-  35,
-  187,
-  187,
-  0,
-  0,
-  0,
-  0,
-  0,
-  128,
-  11
-];
 const dataLabels = [
   'Heat Sink Temperature (C)',
   0.1,
@@ -183,54 +127,56 @@ function dataReceived(data) {
     parseData(hexByteDataArr);
   }
 }
-function initiateCommunicationWithInverter() {
-  let lastDataReadTimestamp,
+function initCommunication() {
+  var lastDataReadTimestamp,
     currentDataReadTimestamp,
     dateDiffInMinutes,
     parser = port.pipe(new ByteLength({ length: 12 })); // Bytes in return. Data - 53 bytes, LogIn - 12 Bytes
-  console.log(parser);
   parser.on('data', dataReceived);
 
   logInListener = setInterval(() => {
     writeAndDrain(commands.logIn);
   }, 2000);
-
-  eventEmitter.on('serial_number', function() {
-    clearInterval(serialPortListener);
-    port.unpipe();
-    parser = port.pipe(new ByteLength({ length: 12 }));
-    parser.on('data', dataReceived);
-
-    logInListener = setInterval(() => {
-      writeAndDrain(commands.logIn);
-    }, 2000);
-  });
-
-  // log in to inverter received, start asking data from inverter
-  eventEmitter.on('log_in', function() {
-    clearInterval(logInListener);
-    port.unpipe();
-    parser = port.pipe(new ByteLength({ length: 53 }));
-    parser.on('data', dataReceived);
-
-    dataListener = setInterval(() => {
-      writeAndDrain(commands.getData);
-    }, 10000);
-  });
-
-  // data event received, check when was the last time data was received from inverter
-  eventEmitter.on('data', function() {
-    lastDataReadTimestamp = currentDataReadTimestamp || new Date();
-    currentDataReadTimestamp = new Date();
-    console.log(lastDataReadTimestamp + '  ' + currentDataReadTimestamp);
-    dateDiffInMinutes =
-      (currentDataReadTimestamp - lastDataReadTimestamp) / (1000 * 60);
-    console.log(dateDiffInMinutes);
-    console.log(`${new Date().toLocaleString()} data read event fired!`);
-  });
 }
+eventEmitter.on('serial_number', function() {
+  clearInterval(serialPortListener);
+  port.unpipe();
+  parser = port.pipe(new ByteLength({ length: 12 }));
+  parser.on('data', dataReceived);
+
+  logInListener = setInterval(() => {
+    writeAndDrain(commands.logIn);
+  }, 2000);
+});
+
+// log in to inverter received, start asking data from inverter
+eventEmitter.on('log_in', function() {
+  clearInterval(logInListener);
+  port.unpipe();
+  parser = port.pipe(new ByteLength({ length: 53 }));
+  parser.on('data', dataReceived);
+
+  dataListener = setInterval(() => {
+    writeAndDrain(commands.getData);
+  }, 10000);
+});
+
+// data event received, check when was the last time data was received from inverter
+eventEmitter.on('data', function() {
+  console.log(`${new Date().toLocaleString()} data read event fired`);
+  clearInterval(dataListener);
+  lastDataReadTimestamp = currentDataReadTimestamp || new Date();
+  currentDataReadTimestamp = new Date();
+  dateDiffInMinutes =
+    (currentDataReadTimestamp - lastDataReadTimestamp) / (1000 * 60);
+  if (dataDiffInMinutes > 30) {
+    console.log(
+      `${new Date().toLocaleString()} last data read was found ago 30 or more minutes!`
+    );
+  }
+});
 // The open event is always emitted
 port.on('open', () => {
   console.log('Port open = ', port.isOpen);
-  initiateCommunicationWithInverter();
+  initCommunication();
 });
