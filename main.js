@@ -129,10 +129,10 @@ function parseData(arr) {
 // }
 port.on('open', () => {
   console.log('Port open = ', port.isOpen);
-  var com = initiateCommunication();
+  var com = initNewCommunication();
   com.startCommunication();
 
-  function initiateCommunication(object) {
+  function initNewCommunication(object) {
     let newCom = new serialCommunicator(port);
     if (object) {
       com = newCom;
@@ -154,7 +154,7 @@ port.on('open', () => {
         `${new Date().toLocaleString()} last data read was found ago 30 or more minutes!`
       );
       com.clearListener();
-      initiateCommunication(com);
+      initNewCommunication(com);
     }
   });
 });
