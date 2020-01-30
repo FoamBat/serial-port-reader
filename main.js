@@ -188,7 +188,7 @@ class serialCommunicator extends EventEmitter {
     }
   }
   startCommunication() {
-    this.parser.on('data', dataReceived);
+    this.parser.on('data', this.dataReceived);
     setListener(2000, commands.logIn);
   }
   setParser(parser) {
@@ -198,7 +198,7 @@ class serialCommunicator extends EventEmitter {
   setListener(timeout, command) {
     if (this.listener) clearInterval(this.listener);
     this.listener = setInterval(() => {
-      writeAndDrain(command);
+      this.writeAndDrain(command);
     }, timeout);
   }
 }
