@@ -129,13 +129,33 @@ function parseData(arr) {
 // }
 port.on('open', () => {
   console.log('Port open = ', port.isOpen);
-  let com = new serialCommunicator(port);
+  var com = initiateCommunication();
   com.startCommunication();
+
+  function initiateCommunication(object) {
+    let newCom = new serialCommunicator(port);
+    if (object) {
+      com = newCom;
+      com.startCommunication();
+    } else {
+      return newCom;
+    }
+  }
 
   com.on('log_in', function() {
     com.setListener(10000, commands.getData);
     const parser = new ByteLength({ length: 53 });
     com.setParser(parser);
+  });
+  com.on('data', function() {
+    console.log(`${new Date().toLocaleString()} data read event fired`);
+    if (com.lastDataReceivedBeforeGivenMinutes(30)) {
+      console.log(
+        `${new Date().toLocaleString()} last data read was found ago 30 or more minutes!`
+      );
+      com.clearListener();
+      initiateCommunication(com);
+    }
   });
 });
 class serialCommunicator extends EventEmitter {
@@ -143,12 +163,12 @@ class serialCommunicator extends EventEmitter {
     super();
     this.lastDataReadTimestamp;
     this.currentDataReadTimestamp;
-    this.dateDiffInMinutes;
     this.listener;
-    var port = port;
+    this.port = port;
     this.parser = port.pipe(new ByteLength({ length: 12 }));
   }
   writeAndDrain(data) {
+    var port = this.port;
     console.log(`Data sent to inverter: ${data}`);
     port.flush();
     port.write(data, function(error) {
@@ -159,6 +179,13 @@ class serialCommunicator extends EventEmitter {
         port.drain(null);
       }
     });
+  }
+  lastDataReceivedBeforeGivenMinutes(amountOfMinutes) {
+    this.lastDataReadTimestamp = this.currentDataReadTimestamp || new Date();
+    this.currentDataReadTimestamp = new Date();
+    let dateDiffInMinutes =
+      (currentDataReadTimestamp - lastDataReadTimestamp) / (1000 * 60);
+    return dateDiffInMinutes >= amountOfMinutes;
   }
   dataReceived(data) {
     let hexByteDataArr = [...data];
@@ -194,6 +221,9 @@ class serialCommunicator extends EventEmitter {
   setParser(parser) {
     this.port.unpipe();
     this.port.pipe(parser);
+  }
+  clearListener() {
+    clearInterval(this.listerner);
   }
   setListener(timeout, command) {
     if (this.listener) clearInterval(this.listener);
