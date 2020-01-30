@@ -142,7 +142,7 @@ port.on('open', () => {
   }
 
   com.on('log_in', function() {
-    com.setListener(10000, commands.getData);
+    com.setListener(60000, commands.getData);
     const parser = new ByteLength({ length: 53 });
     com.setParser(parser);
   });
@@ -215,7 +215,7 @@ class serialCommunicator extends EventEmitter {
   }
   startCommunication() {
     this.parser.on('data', this.dataReceived);
-    this.setListener(2000, commands.logIn);
+    this.setListener(30000, commands.logIn);
   }
   setParser(parser) {
     this.port.unpipe();
