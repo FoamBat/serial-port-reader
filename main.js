@@ -89,20 +89,22 @@ function parseData(arr) {
 
 port.on('open', () => {
   console.log('Port open = ', port.isOpen);
-  var com = new serialCommunicator(port);
+  const parser = new ByteLength({ length: 12 });
+  var com = new serialCommunicator(port, parser);
   //var com = initNewCommunication();
   com.startCommunication();
 });
 
 class serialCommunicator extends EventEmitter {
-  constructor(port) {
+  constructor(port, parser) {
     super();
     this.lastDataReadTimestamp;
     this.currentDataReadTimestamp;
     this.listener;
     this.port = port;
-    const parser = new ByteLength({ length: 12 });
+
     this.setParser(parser);
+
     this.on('log_in', function() {
       console.log(`${new Date().toLocaleString()} log_in event fired`);
       this.setListener(1000 * 10, commands.getData);
@@ -140,7 +142,8 @@ class serialCommunicator extends EventEmitter {
     object.removeListener('data', callback);
     object.removeListener('log_in', callback);
     object.parser.removeListener('data', callback);
-    object = new serialCommunicator(port);
+    const parser = new ByteLength({ length: 53 });
+    object = new serialCommunicator(port, parser);
     object.startCommunication();
   }
   lastDataReceivedBeforeGivenMinutes(amountOfMinutes) {
@@ -177,7 +180,6 @@ class serialCommunicator extends EventEmitter {
   }
   startCommunication() {
     this.setListener(1000 * 5, commands.logIn);
-    this.attachDataEventOnParser();
   }
   attachDataEventOnParser() {
     this.parser.on('data', this.dataReceived.bind(this));
