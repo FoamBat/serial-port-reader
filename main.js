@@ -147,7 +147,8 @@ class serialCommunicator extends EventEmitter {
     this.lastDataReadTimestamp = this.currentDataReadTimestamp || new Date();
     this.currentDataReadTimestamp = new Date();
     let dateDiffInMinutes =
-      (currentDataReadTimestamp - lastDataReadTimestamp) / (1000 * 60);
+      (this.currentDataReadTimestamp - this.lastDataReadTimestamp) /
+      (1000 * 60);
     return dateDiffInMinutes >= amountOfMinutes;
   }
   dataReceived(data) {
