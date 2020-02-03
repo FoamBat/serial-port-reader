@@ -95,6 +95,7 @@ namespace.port = constructSerialPort();
 
 function initNewCommunication(port) {
   delete namespace.com;
+  delete namespace.port;
   port.close(() => {
     namespace.port = constructSerialPort();
   });
