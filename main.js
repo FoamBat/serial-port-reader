@@ -148,7 +148,7 @@ class serialCommunicator extends EventEmitter {
   }
   dataReceived(data) {
     let hexByteDataArr = [...data];
-    dataLength = hexByteDataArr.length;
+    let dataLength = hexByteDataArr.length;
     console.log(dataLength);
     if (dataLength === 22) {
       console.log(
