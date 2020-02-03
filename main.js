@@ -118,7 +118,7 @@ class serialCommunicator extends EventEmitter {
           `${new Date().toLocaleString()} last data read was found ago 30 or more minutes!`
         );
         this.clearListener();
-        initNewCommunication(this, this.port);
+        this.initNewCommunication(this, this.port);
       }
     });
   }
