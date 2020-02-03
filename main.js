@@ -133,7 +133,7 @@ class serialCommunicator extends EventEmitter {
     this.port.on('unpipe', (data) => {
       console.log(`portt piped with new read stream!`);
     });
-    console.log(this.eventNames());
+    console.log(this.port);
   }
   writeAndDrain(data) {
     var port = this.port;
