@@ -98,11 +98,7 @@ function initNewCommunication(port) {
   port.close(() => {
     port = constructSerialPort();
   });
-// }
-// port.on('close', () => {
-//   console.log(`port ${port} closed!!`);
-//   port = constructSerialPort();
-// });
+}
 port.on('open', () => {
   console.log('Port open = ', port.isOpen);
   delete namespace.com;
