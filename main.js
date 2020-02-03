@@ -90,17 +90,17 @@ function parseData(arr) {
   return object;
 }
 var namespace = {};
+namespace.port = constructSerialPort();
 
 function initNewCommunication(port) {
   //console.log('Port open = ', namespace.port.isOpen);
   delete namespace.port;
   delete namespace.com;
-  namespace.port = constructSerialPort();
+
   const parser = new ByteLength({ length: 12 });
   namespace.com = new serialCommunicator(namespace.port, parser);
   namespace.com.startCommunication();
 }
-initNewCommunication();
 
 // port.on('close', () => {
 //   port = constructSerialPort();
