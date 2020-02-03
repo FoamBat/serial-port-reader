@@ -106,6 +106,7 @@ namespace.port.on('open', () => {
   delete namespace.com;
   const parser = new ByteLength({ length: 12 });
   namespace.com = new serialCommunicator(namespace.port, parser);
+  console.log(JSON.stringify(namespace.port));
   //var com = initNewCommunication();
   namespace.com.startCommunication();
 });
