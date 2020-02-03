@@ -92,7 +92,7 @@ function initNewCommunication(port) {
   delete namespace.com;
   const parser = new ByteLength({ length: 12 });
   namespace.com = new serialCommunicator(port, parser);
-  namespace.startCommunication();
+  namespace.com.startCommunication();
 }
 port.on('open', () => {
   console.log('Port open = ', port.isOpen);
