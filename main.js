@@ -130,10 +130,6 @@ class serialCommunicator extends EventEmitter {
       }
     });
     this.parser.on('data', this.dataReceived.bind(this));
-    this.port.on('unpipe', (data) => {
-      console.log(`portt piped with new read stream!`);
-    });
-    console.log(this.port);
   }
   writeAndDrain(data) {
     var port = this.port;
@@ -184,10 +180,10 @@ class serialCommunicator extends EventEmitter {
     this.setListener(1000 * 5, commands.logIn);
   }
   setParser(parser) {
-    this.port.unpipe();
+    this.parser = parser;
     this.port.pipe(parser);
     //console.log(this.parser);
-    parser.on('data', this.dataReceived.bind(this));
+    //parser.on('data', this.dataReceived.bind(this));
   }
   clearListener() {
     clearInterval(this.listerner);
