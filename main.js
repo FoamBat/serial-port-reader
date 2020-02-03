@@ -149,7 +149,7 @@ class serialCommunicator extends EventEmitter {
   dataReceived(data) {
     let hexByteDataArr = [...data];
     dataLength = hexByteDataArr.length;
-    console.log(hexByteDataArr.length);
+    console.log(dataLength);
     if (dataLength === 22) {
       console.log(
         `${new Date().toLocaleString()} Serial Number received - ${hexByteDataArr}`
