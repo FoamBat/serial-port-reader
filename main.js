@@ -199,8 +199,9 @@ class serialCommunicator extends EventEmitter {
     this.attachDataEventOnParser();
   }
   clearListener() {
-    console.log(`listener ${this.listener.toString()} stopped!`);
+    //console.log(`listener ${this.listener.toString()} stopped!`);
     clearInterval(this.listerner);
+    console.log(`${this}`);
   }
   setListener(timeout, command) {
     if (this.listener) clearInterval(this.listener);
