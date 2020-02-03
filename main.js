@@ -201,7 +201,7 @@ class serialCommunicator extends EventEmitter {
   clearListener() {
     //console.log(`listener ${this.listener.toString()} stopped!`);
     clearInterval(this.listerner);
-    console.log(`${this}`);
+    console.log(`${JSON.stringify(this)}`);
   }
   setListener(timeout, command) {
     if (this.listener) clearInterval(this.listener);
