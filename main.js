@@ -106,7 +106,7 @@ port.on('open', () => {
 class serialCommunicator extends EventEmitter {
   constructor(port) {
     super();
-    var self = this;
+    this.self = this;
     this.lastDataReadTimestamp;
     this.currentDataReadTimestamp;
     this.listener;
@@ -168,7 +168,7 @@ class serialCommunicator extends EventEmitter {
         `${new Date().toLocaleString()} Log In received - ${hexByteDataArr}`
       );
 
-      self.emit('log_in');
+      this.self.emit('log_in');
     }
     if (dataLength === 53) {
       console.log(
