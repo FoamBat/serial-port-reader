@@ -106,7 +106,6 @@ port.on('open', () => {
 class serialCommunicator extends EventEmitter {
   constructor(port) {
     super();
-    this.self = this;
     this.lastDataReadTimestamp;
     this.currentDataReadTimestamp;
     this.listener;
