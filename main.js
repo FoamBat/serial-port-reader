@@ -93,9 +93,6 @@ port.on('open', () => {
   //var com = initNewCommunication();
   com.startCommunication();
   console.log(com.eventNames());
-  com.on('log_in', () => {
-    console.log('log_in');
-  });
   function initNewCommunication(object) {
     let newCom = new serialCommunicator(port);
     if (!object) {
@@ -168,8 +165,11 @@ class serialCommunicator extends EventEmitter {
       console.log(
         `${new Date().toLocaleString()} Log In received - ${hexByteDataArr}`
       );
+      console.log(this);
+      this.on('log_in', () => {
+        console.log('log_in');
+      });
       this.emit('log_in');
-      //eventEmitter.emit('log_in');
     }
     if (dataLength === 53) {
       console.log(
