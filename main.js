@@ -81,7 +81,7 @@ function parseData(arr) {
   for (let i = 0; i < 21; i++) {
     let temp = (arr[9 + i * 2] << 8) + arr[10 + i * 2];
     object[dataLabels[i * 2]] = temp * dataLabels[i * 2 + 1];
-    console.log(`${dataLabels[i * 2]} - ${temp * dataLabels[i * 2 + 1]}`);
+    //console.log(`${dataLabels[i * 2]} - ${temp * dataLabels[i * 2 + 1]}`);
   }
   appendDataToFile(object);
   return object;
