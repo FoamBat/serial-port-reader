@@ -160,13 +160,11 @@ class serialCommunicator extends EventEmitter {
         `${new Date().toLocaleString()} Serial Number received - ${hexByteDataArr}`
       );
       this.emit('serial_number');
-      //eventEmitter.emit('serial_number');
     }
     if (dataLength === 12) {
       console.log(
         `${new Date().toLocaleString()} Log In received - ${hexByteDataArr}`
       );
-      console.log(this.eventNames());
       this.emit('log_in');
     }
     if (dataLength === 53) {
@@ -174,7 +172,6 @@ class serialCommunicator extends EventEmitter {
         `${new Date().toLocaleString()} Data From Inverter received - ${hexByteDataArr}`
       );
       this.emit('data');
-      //eventEmitter.emit('data');
       parseData(hexByteDataArr);
     }
   }
@@ -185,6 +182,7 @@ class serialCommunicator extends EventEmitter {
   setParser(parser) {
     this.port.unpipe();
     this.port.pipe(parser);
+    this.parser.on('data', this.dataReceived.bind(this));
   }
   clearListener() {
     clearInterval(this.listerner);
