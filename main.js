@@ -91,7 +91,7 @@ port.on('open', () => {
   console.log('Port open = ', port.isOpen);
   var com = initNewCommunication();
   com.startCommunication();
-
+  console.log(com);
   function initNewCommunication(object) {
     let newCom = new serialCommunicator(port);
     if (!object) {
