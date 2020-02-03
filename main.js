@@ -96,7 +96,7 @@ namespace.port = constructSerialPort();
 function initNewCommunication(port) {
   delete namespace.com;
   delete namespace.port;
-  console.log(`initiate new communication: ${namepace}`);
+  console.log(`initiate new communication: ${namespace}`);
   namespace.port = constructSerialPort();
 }
 // port.on('close', () => {
@@ -123,7 +123,7 @@ class serialCommunicator extends EventEmitter {
 
     this.on('log_in', function() {
       console.log(`${new Date().toLocaleString()} log_in event fired`);
-      this.setListener(1000 * 10, commands.getData);
+      this.setListener(1000 * 3, commands.getData);
       const parser = new ByteLength({ length: 53 });
       this.setParser(parser);
     });
@@ -187,7 +187,7 @@ class serialCommunicator extends EventEmitter {
     }
   }
   startCommunication() {
-    this.setListener(1000 * 5, commands.logIn);
+    this.setListener(1000 * 3, commands.logIn);
   }
   attachDataEventOnParser() {
     this.parser.on('data', this.dataReceived.bind(this));
