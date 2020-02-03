@@ -91,15 +91,17 @@ function parseData(arr) {
 }
 var namespace = {};
 
-var port = constructSerialPort();
+namespace.port = constructSerialPort();
 
 function initNewCommunication(port) {
   delete namespace.com;
-  port.close();
+  delete namespace.port;
+  console.log(`initiate new communication: ${namepace}`);
+  namespace.port = constructSerialPort();
 }
-port.on('close', () => {
-  port = constructSerialPort();
-});
+// port.on('close', () => {
+//   port = constructSerialPort();
+// });
 port.on('open', () => {
   console.log('Port open = ', port.isOpen);
   delete namespace.com;
