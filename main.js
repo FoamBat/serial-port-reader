@@ -89,9 +89,12 @@ function parseData(arr) {
 
 port.on('open', () => {
   console.log('Port open = ', port.isOpen);
-  var com = initNewCommunication();
+  var com = new serialCommunicator(port);
+  //var com = initNewCommunication();
   com.startCommunication();
-  console.log(com);
+  com.on('log_in', () => {
+    console.log('log_in');
+  });
   function initNewCommunication(object) {
     let newCom = new serialCommunicator(port);
     if (!object) {
@@ -105,7 +108,6 @@ port.on('open', () => {
 class serialCommunicator extends EventEmitter {
   constructor(port) {
     super();
-    var self = this;
     this.lastDataReadTimestamp;
     this.currentDataReadTimestamp;
     this.listener;
@@ -165,7 +167,7 @@ class serialCommunicator extends EventEmitter {
       console.log(
         `${new Date().toLocaleString()} Log In received - ${hexByteDataArr}`
       );
-      self.emit('log_in');
+      this.emit('log_in');
       //eventEmitter.emit('log_in');
     }
     if (dataLength === 53) {
