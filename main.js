@@ -102,11 +102,11 @@ function reconnect() {
   namespace.com = new serialCommunicator(namespace.port, parser);
   namespace.com.startCommunication();
 }
-namespace.port.on('close', function(err) {
+namespace.port.on('close', (err) => {
   console.log('Port closed.');
   if (err.disconnected === true) {
     console.log('Disconnected!');
-    namespace.port.resume(function(e) {
+    namespace.port.resume((e) => {
       reconnect(); // Serial Port Initialization Function. It's your method to declare serial port.
       console.log('Error on resuming port:', e);
     });
@@ -131,7 +131,7 @@ class serialCommunicator extends EventEmitter {
 
     this.on('log_in', function() {
       console.log(`${new Date().toLocaleString()} log_in event fired`);
-      this.setListener(1000 * 3, commands.getData);
+      this.setListener(1000 * 60, commands.getData);
       const parser = new ByteLength({ length: 53 });
       this.setParser(parser);
     });
@@ -195,7 +195,7 @@ class serialCommunicator extends EventEmitter {
     }
   }
   startCommunication() {
-    this.setListener(1000 * 3, commands.logIn);
+    this.setListener(1000 * 60, commands.logIn);
   }
   attachDataEventOnParser() {
     this.parser.on('data', this.dataReceived.bind(this));
