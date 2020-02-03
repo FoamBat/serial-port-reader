@@ -100,23 +100,22 @@ port.on('open', () => {
     com = newCom;
     com.startCommunication();
   }
-
-  com.on('log_in', function() {
-    console.log(`${new Date().toLocaleString()} log_in event fired`);
-    com.setListener(60000, commands.getData);
-    const parser = new ByteLength({ length: 53 });
-    com.setParser(parser);
-  });
-  com.on('data', function() {
-    console.log(`${new Date().toLocaleString()} data read event fired`);
-    if (com.lastDataReceivedBeforeGivenMinutes(30)) {
-      console.log(
-        `${new Date().toLocaleString()} last data read was found ago 30 or more minutes!`
-      );
-      com.clearListener();
-      initNewCommunication(com);
-    }
-  });
+});
+com.on('log_in', function() {
+  console.log(`${new Date().toLocaleString()} log_in event fired`);
+  com.setListener(60000, commands.getData);
+  const parser = new ByteLength({ length: 53 });
+  com.setParser(parser);
+});
+com.on('data', function() {
+  console.log(`${new Date().toLocaleString()} data read event fired`);
+  if (com.lastDataReceivedBeforeGivenMinutes(30)) {
+    console.log(
+      `${new Date().toLocaleString()} last data read was found ago 30 or more minutes!`
+    );
+    com.clearListener();
+    initNewCommunication(com);
+  }
 });
 class serialCommunicator extends EventEmitter {
   constructor(port) {
