@@ -89,6 +89,7 @@ function parseData(arr) {
 var namespace = {};
 
 function initNewCommunication(port) {
+  console.log(namespace);
   delete namespace.com;
   const parser = new ByteLength({ length: 12 });
   namespace.com = new serialCommunicator(port, parser);
