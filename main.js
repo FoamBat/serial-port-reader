@@ -142,6 +142,7 @@ class serialCommunicator extends EventEmitter {
     object.removeListener('data', callback);
     object.removeListener('log_in', callback);
     object.parser.removeListener('data', callback);
+    object = null;
     const parser = new ByteLength({ length: 12 });
     let com = new serialCommunicator(port, parser);
     com.startCommunication();
