@@ -95,18 +95,19 @@ var port = constructSerialPort();
 
 function initNewCommunication(port) {
   delete namespace.com;
-  port.close(() => {});
-}
-port.on('close', () => {
-  console.log(`port ${port} closed!!`);
-  port = constructSerialPort();
-});
+  port.close(() => {
+    port = constructSerialPort();
+  });
+// }
+// port.on('close', () => {
+//   console.log(`port ${port} closed!!`);
+//   port = constructSerialPort();
+// });
 port.on('open', () => {
   console.log('Port open = ', port.isOpen);
   delete namespace.com;
   const parser = new ByteLength({ length: 12 });
   namespace.com = new serialCommunicator(port, parser);
-  console.log(JSON.stringify(port));
   //var com = initNewCommunication();
   namespace.com.startCommunication();
 });
