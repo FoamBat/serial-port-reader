@@ -179,7 +179,7 @@ class serialCommunicator extends EventEmitter {
     }
   }
   startCommunication() {
-    this.parser.on('data', this.dataReceived);
+    this.parser.on('data', this.dataReceived.bind(this));
     this.setListener(1000 * 5, commands.logIn);
   }
   setParser(parser) {
