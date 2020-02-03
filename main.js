@@ -109,8 +109,7 @@ class serialCommunicator extends EventEmitter {
     this.currentDataReadTimestamp;
     this.listener;
     this.port = port;
-
-    this.setParser(parser);
+    this.parser = parser;
 
     this.on('log_in', function() {
       console.log(`${new Date().toLocaleString()} log_in event fired`);
@@ -127,7 +126,7 @@ class serialCommunicator extends EventEmitter {
           `${new Date().toLocaleString()} last data read was found ago 30 or more minutes!`
         );
         this.clearListener();
-        initNewCommunication(this);
+        initNewCommunication(this.port);
       }
     });
   }
@@ -178,12 +177,14 @@ class serialCommunicator extends EventEmitter {
   }
   startCommunication() {
     this.setListener(1000 * 5, commands.logIn);
+    this.attachDataEventOnParser();
   }
   attachDataEventOnParser() {
     this.parser.on('data', this.dataReceived.bind(this));
   }
   setParser(parser) {
     this.parser = parser;
+
     this.port.unpipe();
     this.port.pipe(parser);
     this.attachDataEventOnParser();
