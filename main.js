@@ -142,9 +142,9 @@ class serialCommunicator extends EventEmitter {
     object.removeListener('data', callback);
     object.removeListener('log_in', callback);
     object.parser.removeListener('data', callback);
-    const parser = new ByteLength({ length: 53 });
-    object = new serialCommunicator(port, parser);
-    object.startCommunication();
+    const parser = new ByteLength({ length: 12 });
+    let com = new serialCommunicator(port, parser);
+    com.startCommunication();
   }
   lastDataReceivedBeforeGivenMinutes(amountOfMinutes) {
     this.lastDataReadTimestamp = this.currentDataReadTimestamp || new Date();
