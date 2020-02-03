@@ -51,18 +51,21 @@ const dataLabels = [
   0.001
 ];
 
-var port = new SerialPort(
-  'COM1',
-  {
-    baudRate: 9600,
-    dataBits: 8,
-    stopBits: 1,
-    parity: 'none'
-  },
-  (error) => {
-    if (error) console.log(`connection with serialport COM1 failed: ${error}`);
-  }
-);
+function constructSerialPort() {
+  return new SerialPort(
+    'COM1',
+    {
+      baudRate: 9600,
+      dataBits: 8,
+      stopBits: 1,
+      parity: 'none'
+    },
+    (error) => {
+      if (error)
+        console.log(`connection with serialport COM1 failed: ${error}`);
+    }
+  );
+}
 
 function appendDataToFile(data) {
   fs.appendFile(
@@ -88,15 +91,17 @@ function parseData(arr) {
 }
 var namespace = {};
 
+namespace.port = constructSerialPort();
+
 function initNewCommunication(port) {
-  console.log(namespace);
-  delete namespace.com;
-  const parser = new ByteLength({ length: 12 });
-  namespace.com = new serialCommunicator(port, parser);
-  namespace.com.startCommunication();
+  port.close();
+  namespace.port = constructSerialPort();
 }
-port.on('open', () => {
+
+namespace.port.on('open', () => {
   console.log('Port open = ', port.isOpen);
+  delete namespace.com;
+  delete namespace.port;
   const parser = new ByteLength({ length: 12 });
   namespace.com = new serialCommunicator(port, parser);
   //var com = initNewCommunication();
@@ -128,7 +133,7 @@ class serialCommunicator extends EventEmitter {
           `${new Date().toLocaleString()} last data read was found ago 30 or more minutes!`
         );
         this.clearListener();
-        this.parser.removeAllListeners('data');
+        //this.parser.removeAllListeners('data');
         initNewCommunication(this.port);
       }
     });
