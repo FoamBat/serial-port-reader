@@ -91,7 +91,7 @@ function parseData(arr) {
 }
 var namespace = {};
 
-namespace.port = constructSerialPort();
+var port = constructSerialPort();
 
 function initNewCommunication(port) {
   delete namespace.com;
@@ -101,12 +101,12 @@ function initNewCommunication(port) {
   });
 }
 
-namespace.port.on('open', () => {
-  console.log('Port open = ', namespace.port.isOpen);
+port.on('open', () => {
+  console.log('Port open = ', port.isOpen);
   delete namespace.com;
   const parser = new ByteLength({ length: 12 });
-  namespace.com = new serialCommunicator(namespace.port, parser);
-  console.log(JSON.stringify(namespace.port));
+  namespace.com = new serialCommunicator(port, parser);
+  console.log(JSON.stringify(port));
   //var com = initNewCommunication();
   namespace.com.startCommunication();
 });
