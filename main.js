@@ -136,6 +136,10 @@ class serialCommunicator extends EventEmitter {
     });
   }
   initNewCommunication(object, port) {
+    function callback() {}
+    object.removeListener('data', callback);
+    object.removeListener('log_in', callback);
+    object.parser.removeListener('data', callback);
     object = new serialCommunicator(port);
     object.startCommunication();
   }
