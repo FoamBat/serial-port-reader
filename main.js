@@ -98,19 +98,21 @@ function initNewCommunication(port) {
   delete namespace.port;
   console.log(`initiate new communication: ${namespace}`);
   namespace.port = constructSerialPort();
+  onPortOpen();
 }
 // port.on('close', () => {
 //   port = constructSerialPort();
 // });
-namespace.port.on('open', () => {
-  console.log('Port open = ', namespace.port.isOpen);
-  delete namespace.com;
-  const parser = new ByteLength({ length: 12 });
-  namespace.com = new serialCommunicator(namespace.port, parser);
-  //var com = initNewCommunication();
-  namespace.com.startCommunication();
-});
-
+function onPortOpen() {
+  namespace.port.on('open', () => {
+    console.log('Port open = ', namespace.port.isOpen);
+    delete namespace.com;
+    const parser = new ByteLength({ length: 12 });
+    namespace.com = new serialCommunicator(namespace.port, parser);
+    //var com = initNewCommunication();
+    namespace.com.startCommunication();
+  });
+}
 class serialCommunicator extends EventEmitter {
   constructor(port, parser) {
     super();
