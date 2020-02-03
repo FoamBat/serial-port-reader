@@ -92,6 +92,7 @@ port.on('open', () => {
   var com = new serialCommunicator(port);
   //var com = initNewCommunication();
   com.startCommunication();
+  console.log(com.eventNames());
   com.on('log_in', () => {
     console.log('log_in');
   });
