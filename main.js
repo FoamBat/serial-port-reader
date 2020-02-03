@@ -92,9 +92,9 @@ function parseData(arr) {
 var namespace = {};
 namespace.port = constructSerialPort();
 
-function initNewCommunication(port) {
+function initNewCommunication() {
   //console.log('Port open = ', namespace.port.isOpen);
-  delete namespace.port;
+
   delete namespace.com;
 
   const parser = new ByteLength({ length: 12 });
