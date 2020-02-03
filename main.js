@@ -86,13 +86,20 @@ function parseData(arr) {
   appendDataToFile(object);
   return object;
 }
+var namespace = {};
 
+function initNewCommunication(port) {
+  delete namespace.com;
+  const parser = new ByteLength({ length: 12 });
+  namespace.com = new serialCommunicator(port, parser);
+  namespace.startCommunication();
+}
 port.on('open', () => {
   console.log('Port open = ', port.isOpen);
   const parser = new ByteLength({ length: 12 });
-  var com = new serialCommunicator(port, parser);
+  namespace.com = new serialCommunicator(port, parser);
   //var com = initNewCommunication();
-  com.startCommunication();
+  namespace.com.startCommunication();
 });
 
 class serialCommunicator extends EventEmitter {
@@ -120,7 +127,7 @@ class serialCommunicator extends EventEmitter {
           `${new Date().toLocaleString()} last data read was found ago 30 or more minutes!`
         );
         this.clearListener();
-        this.initNewCommunication(this, this.port);
+        initNewCommunication(this);
       }
     });
   }
@@ -136,12 +143,6 @@ class serialCommunicator extends EventEmitter {
         port.drain(null);
       }
     });
-  }
-  initNewCommunication(port) {
-    this = null;
-    const parser = new ByteLength({ length: 12 });
-    let com = new serialCommunicator(port, parser);
-    com.startCommunication();
   }
   lastDataReceivedBeforeGivenMinutes(amountOfMinutes) {
     this.lastDataReadTimestamp = this.currentDataReadTimestamp || new Date();
