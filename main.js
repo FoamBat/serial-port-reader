@@ -92,15 +92,6 @@ port.on('open', () => {
   var com = new serialCommunicator(port);
   //var com = initNewCommunication();
   com.startCommunication();
-
-  function initNewCommunication(object) {
-    let newCom = new serialCommunicator(port);
-    if (!object) {
-      return newCom;
-    }
-    com = newCom;
-    com.startCommunication();
-  }
 });
 
 class serialCommunicator extends EventEmitter {
@@ -127,7 +118,7 @@ class serialCommunicator extends EventEmitter {
           `${new Date().toLocaleString()} last data read was found ago 30 or more minutes!`
         );
         this.clearListener();
-        initNewCommunication(com);
+        initNewCommunication(this, this.port);
       }
     });
   }
@@ -143,6 +134,10 @@ class serialCommunicator extends EventEmitter {
         port.drain(null);
       }
     });
+  }
+  initNewCommunication(object, port) {
+    object = new serialCommunicator(port);
+    object.startCommunication();
   }
   lastDataReceivedBeforeGivenMinutes(amountOfMinutes) {
     this.lastDataReadTimestamp = this.currentDataReadTimestamp || new Date();
