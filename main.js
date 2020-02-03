@@ -91,8 +91,6 @@ function parseData(arr) {
 }
 var namespace = {};
 
-initNewCommunication();
-
 function initNewCommunication(port) {
   //console.log('Port open = ', namespace.port.isOpen);
   delete namespace.port;
@@ -102,6 +100,8 @@ function initNewCommunication(port) {
   namespace.com = new serialCommunicator(namespace.port, parser);
   namespace.com.startCommunication();
 }
+initNewCommunication();
+
 // port.on('close', () => {
 //   port = constructSerialPort();
 // });
