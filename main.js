@@ -102,11 +102,11 @@ function initNewCommunication(port) {
 // port.on('close', () => {
 //   port = constructSerialPort();
 // });
-port.on('open', () => {
-  console.log('Port open = ', port.isOpen);
+namespace.port.on('open', () => {
+  console.log('Port open = ', namespace.port.isOpen);
   delete namespace.com;
   const parser = new ByteLength({ length: 12 });
-  namespace.com = new serialCommunicator(port, parser);
+  namespace.com = new serialCommunicator(namespace.port, parser);
   //var com = initNewCommunication();
   namespace.com.startCommunication();
 });
