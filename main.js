@@ -166,7 +166,6 @@ class serialCommunicator extends EventEmitter {
       console.log(
         `${new Date().toLocaleString()} Log In received - ${hexByteDataArr}`
       );
-      console.log(this === );
       this.emit('log_in');
     }
     if (dataLength === 53) {
