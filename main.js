@@ -102,6 +102,7 @@ port.on('open', () => {
   }
 
   com.on('log_in', function() {
+    console.log(`${new Date().toLocaleString()} log_in event fired`);
     com.setListener(60000, commands.getData);
     const parser = new ByteLength({ length: 53 });
     com.setParser(parser);
