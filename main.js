@@ -95,12 +95,13 @@ var port = constructSerialPort();
 
 function initNewCommunication(port) {
   delete namespace.com;
-  delete namespace.port;
   port.close(() => {
-    namespace.port = constructSerialPort();
+    port = constructSerialPort();
   });
 }
-
+port.on('close', () => {
+  console.log(`port ${port} closed!!`);
+});
 port.on('open', () => {
   console.log('Port open = ', port.isOpen);
   delete namespace.com;
