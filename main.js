@@ -101,7 +101,6 @@ function initNewCommunication(port) {
 namespace.port.on('open', () => {
   console.log('Port open = ', namespace.port.isOpen);
   delete namespace.com;
-  delete namespace.port;
   const parser = new ByteLength({ length: 12 });
   namespace.com = new serialCommunicator(namespace.port, parser);
   //var com = initNewCommunication();
