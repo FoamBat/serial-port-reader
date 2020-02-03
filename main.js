@@ -129,7 +129,6 @@ class serialCommunicator extends EventEmitter {
         initNewCommunication(com);
       }
     });
-    this.parser.on('data', this.dataReceived.bind(this));
   }
   writeAndDrain(data) {
     var port = this.port;
@@ -176,15 +175,17 @@ class serialCommunicator extends EventEmitter {
     }
   }
   startCommunication() {
-    //this.parser.on('data', this.dataReceived.bind(this));
     this.setListener(1000 * 5, commands.logIn);
+    this.attachDataEventOnParser();
+  }
+  attachDataEventOnParser() {
+    this.parser.on('data', this.dataReceived.bind(this));
   }
   setParser(parser) {
     this.parser = parser;
     this.port.unpipe();
     this.port.pipe(parser);
-    //console.log(this.parser);
-    //parser.on('data', this.dataReceived.bind(this));
+    this.attachDataEventOnParser();
   }
   clearListener() {
     clearInterval(this.listerner);
