@@ -90,9 +90,7 @@ function parseData(arr) {
   appendDataToFile(object);
   return object;
 }
-var namespace = {};
-namespace.port = constructSerialPort();
-namespace.port.open();
+
 function initNewCommunication(port) {
   delete namespace.com;
   port.close();
@@ -108,6 +106,8 @@ function reconnect() {
   namespace.port = constructSerialPort();
   namespace.port.open();
 }
+var namespace = {};
+reconnect();
 namespace.port.on('close', (err) => {
   console.log(`Port closed.`);
   reconnect(); // Serial Port Initialization Function. It's your method to declare serial port.
