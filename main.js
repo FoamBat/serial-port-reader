@@ -91,7 +91,7 @@ function parseData(arr) {
 }
 var namespace = {};
 namespace.port = constructSerialPort();
-
+setTimeout(() => {}, 500);
 function initNewCommunication(port) {
   delete namespace.com;
   port.close(() => {
