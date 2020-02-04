@@ -57,13 +57,12 @@ function onOpen() {
     }
   });
   namespace.com.on('log_in', function(data) {
-    console.log(decToAscii(data));
     namespace.com.setListener(commands.getData, DATA_INTERVAL);
     const parser = constructByteLengthParser(53);
     namespace.com.setParser(parser);
   });
   namespace.com.on('serial_number', function(data) {
-    console.log(decToAscii(data));
+    console.log(decToAscii(data).substring(10, 21));
     namespace.com.setListener(commands.logIn, LOGIN_INTERVAL);
     const parser = constructByteLengthParser(12);
     namespace.com.setParser(parser);
