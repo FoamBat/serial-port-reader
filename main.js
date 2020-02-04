@@ -98,6 +98,7 @@ function initNewCommunication(port) {
   port.close();
 }
 function onOpen() {
+  console.log(`Port opened. ${namespace.port.isOpen}`);
   const parser = new ByteLength({ length: 12 });
   namespace.com = new serialCommunicator(namespace.port, parser);
   namespace.com.startCommunication();
