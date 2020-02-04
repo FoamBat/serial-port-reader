@@ -1,6 +1,4 @@
 const events = require('events');
-const commands = require('./commands');
-
 const EventEmitter = events.EventEmitter;
 
 class SerialCommunicator extends EventEmitter {

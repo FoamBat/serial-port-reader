@@ -3,6 +3,7 @@ const SerialPort = require('serialport');
 const ByteLength = require('@serialport/parser-byte-length');
 const SerialCommunicator = require('./serialCom');
 const parseData = require('./parser');
+const commands = require('./commands');
 
 function constructSerialPort() {
   return new SerialPort(
