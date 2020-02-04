@@ -7,6 +7,7 @@ class SerialCommunicator extends EventEmitter {
     this.lastDataReadTimestamp;
     this.currentDataReadTimestamp;
     this.listener;
+    this.inverterNumber;
     this.port = port;
     this.setParser(parser);
   }
@@ -57,6 +58,9 @@ class SerialCommunicator extends EventEmitter {
   }
   attachDataEventOnParser() {
     this.parser.on('data', this.dataReceived.bind(this));
+  }
+  setInverterNumber(inverterNumber) {
+    this.inverterNumber = inverterNumber;
   }
   setParser(parser) {
     this.parser = parser;

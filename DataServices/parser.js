@@ -98,9 +98,9 @@ function appendDataToFile(data) {
   );
 }
 
-function parseData(arr) {
+function parseData(arr, inverterNumber) {
   let object = {};
-  object['inverter'] = '10001851101';
+  object['inverter'] = inverterNumber;
   object['date_time'] = new Date();
   for (let i = 0; i < 21; i++) {
     let temp = (arr[9 + i * 2] << 8) + arr[10 + i * 2];

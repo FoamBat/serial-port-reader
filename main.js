@@ -2,27 +2,33 @@ const SerialPort = require('serialport');
 const ByteLength = require('@serialport/parser-byte-length');
 
 const sendDataToSnInstance = require('./DataServices/sn-rest-api');
-const SerialCommunicator = require('./SerialPortCommunication/serialCom');
 const parseData = require('./DataServices/parser');
 const commands = require('./SerialPortCommunication/commands');
-const { DATA_INTERVAL, LOGIN_INTERVAL } = require('./config');
+const SerialCommunicator = require('./SerialPortCommunication/serialCom');
+const {
+  DATA_INTERVAL,
+  LOGIN_INTERVAL,
+  RETURN_BYTES_OF_DATA,
+  RETURN_BYTES_OF_SERIAL,
+  RETURN_BYTES_OF_LOGIN
+} = require('./config');
 
-function constructSerialPort() {
+function constructSerialPort(port, baudRate) {
   return new SerialPort(
-    'COM1',
+    port,
     {
-      baudRate: 9600,
+      baudRate: baudRate,
       dataBits: 8,
       stopBits: 1,
       parity: 'none'
     },
     (error) => {
       if (error)
-        console.log(`connection with serialport COM1 failed: ${error}`);
+        console.log(`connection with serialport ${port} failed: ${error}`);
     }
   );
 }
-function decToAscii(data) {
+function decimalToAscii(data) {
   let result = '';
   data.map((charCode) => {
     result += String.fromCharCode(charCode);
@@ -34,50 +40,57 @@ function constructByteLengthParser(byteLen) {
   return new ByteLength({ length: byteLen });
 }
 function initNewCommunication(port) {
-  delete namespace.com;
+  //delete Communicator;
   port.close();
 }
 function onOpen() {
-  console.log(`${new Date().toLocaleString()} Port opened.`);
-  const parser = constructByteLengthParser(22);
-  namespace.com = new SerialCommunicator(namespace.port, parser);
+  let port = this.port;
+  console.log(`${new Date().toLocaleString()} ${this.port} Port opened.`);
+  const parser = constructByteLengthParser(RETURN_BYTES_OF_SERIAL);
+  let Communicator = new SerialCommunicator(port, parser);
 
   // start communicating with inverter using command (1st param) and interval frequency (2nd param)
-  namespace.com.setListener(commands.getSerialNumber, LOGIN_INTERVAL);
-  namespace.com.on('data', function(data) {
+  Communicator.setListener(commands.getSerialNumber, LOGIN_INTERVAL);
+  Communicator.on('data', function(data) {
+    const inverterNumber = Communicator.inverterNumber;
     // send received data to Servicenow
-    sendDataToSnInstance(parseData(data));
+    sendDataToSnInstance(parseData(data, inverterNumber));
 
-    if (namespace.com.lastDataReceivedBeforeGivenMinutes >= 30) {
+    if (Communicator.lastDataReceivedBeforeGivenMinutes >= 30) {
       console.log(
         `${new Date().toLocaleString()} last data read was found ago 30 or more minutes!`
       );
-      namespace.com.clearListener();
-      initNewCommunication(namespace.port);
+      Communicator.clearListener();
+      initNewCommunication(port);
     }
   });
-  namespace.com.on('log_in', function(data) {
-    namespace.com.setListener(commands.getData, DATA_INTERVAL);
-    const parser = constructByteLengthParser(53);
-    namespace.com.setParser(parser);
+  Communicator.on('log_in', function(data) {
+    const parser = constructByteLengthParser(RETURN_BYTES_OF_DATA);
+
+    Communicator.setListener(commands.getData, DATA_INTERVAL);
+    Communicator.setParser(parser);
   });
-  namespace.com.on('serial_number', function(data) {
-    console.log(decToAscii(data).substring(10, 21));
-    namespace.com.setListener(commands.logIn, LOGIN_INTERVAL);
-    const parser = constructByteLengthParser(12);
-    namespace.com.setParser(parser);
+  Communicator.on('serial_number', function(data) {
+    const inverterNumber = decimalToAscii(data).substring(11, 23);
+    const parser = constructByteLengthParser(RETURN_BYTES_OF_LOGIN);
+
+    Communicator.setInverterNumber(inverterNumber);
+    Communicator.setListener(commands.logIn, LOGIN_INTERVAL);
+    Communicator.setParser(parser);
   });
 }
-function reconnect() {
-  namespace.port = constructSerialPort();
-  namespace.port.on('open', onOpen);
-  namespace.port.on('close', (err) => {
+function connect(port) {
+  port.on('open', onOpen.bind(port));
+  port.on('close', (err) => {
     console.log(
       `${new Date().toLocaleString()} Port closed. Reconnect to SerialPort.`
     );
-    reconnect();
+    connect(port);
   });
 }
 
 var namespace = {};
-reconnect();
+namespace.com2 = constructSerialPort('COM2', 19200);
+namespace.com6 = constructSerialPort('COM6', 19200);
+connect(namespace.com2);
+connect(namespace.com6);
