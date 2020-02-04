@@ -9,9 +9,7 @@ const sendDataToSnInstance = (json) => {
         user: username,
         pass: password
       },
-      url:
-        instanceUrl +
-        '/api/x_438913_solarpola/solarinverterdataimp/createRecord',
+      url: instanceUrl + '/api/x_438913_solarpola/solarinverterdataimp/create',
       body: JSON.stringify(json)
     },
     (error, response, body) => {
