@@ -45,7 +45,9 @@ function initNewCommunication(port) {
 }
 function onOpen() {
   let port = this;
-  console.log(`${new Date().toLocaleString()} ${port.name} Port opened.`);
+  console.log(
+    `${new Date().toLocaleString()} ${JSON.stringify(port)} Port opened.`
+  );
   const parser = constructByteLengthParser(RETURN_BYTES_OF_SERIAL);
   let Communicator = new SerialCommunicator(port, parser);
 
