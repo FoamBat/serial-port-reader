@@ -1,7 +1,7 @@
 const SerialPort = require('serialport');
 const ByteLength = require('@serialport/parser-byte-length');
 
-const sendDataToSnInstance = require('.DataServices/sn-rest-api');
+const sendDataToSnInstance = require('./DataServices/sn-rest-api');
 const SerialCommunicator = require('./SerialPortCommunication/serialCom');
 const parseData = require('./DataServices/parser');
 const commands = require('./SerialPortCommunication/commands');
