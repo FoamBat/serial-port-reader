@@ -55,6 +55,7 @@ function constructSerialPort() {
   return new SerialPort(
     'COM1',
     {
+      autoOpen: false,
       baudRate: 9600,
       dataBits: 8,
       stopBits: 1,
@@ -91,7 +92,7 @@ function parseData(arr) {
 }
 var namespace = {};
 namespace.port = constructSerialPort();
-setTimeout(() => {}, 500);
+namespace.port.open();
 function initNewCommunication(port) {
   delete namespace.com;
   port.close(() => {
@@ -99,13 +100,8 @@ function initNewCommunication(port) {
   });
 }
 function reconnect() {
-  const parser = new ByteLength({ length: 12 });
   namespace.port = constructSerialPort();
-  namespace.port.on('open', () => {
-    const parser = new ByteLength({ length: 12 });
-    namespace.com = new serialCommunicator(namespace.port, parser);
-    namespace.com.startCommunication();
-  });
+  namespace.port.open();
 }
 namespace.port.on('close', (err) => {
   console.log(`Port closed.`);
