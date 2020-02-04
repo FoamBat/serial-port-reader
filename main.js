@@ -1,6 +1,7 @@
 const SerialPort = require('serialport');
 const ByteLength = require('@serialport/parser-byte-length');
 
+const sendDataToSnInstance = require('./sn-rest-api');
 const SerialCommunicator = require('./SerialPortCommunication/serialCom');
 const parseData = require('./DataServices/parser');
 const commands = require('./SerialPortCommunication/commands');
@@ -33,10 +34,14 @@ function onOpen() {
   console.log(`${new Date().toLocaleString()} Port opened.`);
   const parser = constructByteLengthParser(12);
   namespace.com = new SerialCommunicator(namespace.port, parser);
+
+  // start communicating with inverter using command (1st param) and interval frequency (2nd param)
   namespace.com.startCommunication(commands.logIn, LOGIN_INTERVAL);
   namespace.com.on('data', function(data) {
-    parseData(data);
-    if (true) {
+    // send received data to Servicenow
+    sendDataToSnInstance(parseData(data));
+
+    if (namespace.com.lastDataReceivedBeforeGivenMinutes >= 30) {
       console.log(
         `${new Date().toLocaleString()} last data read was found ago 30 or more minutes!`
       );
