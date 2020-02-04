@@ -101,14 +101,16 @@ function initNewCommunication(port) {
 function reconnect() {
   const parser = new ByteLength({ length: 12 });
   namespace.port = constructSerialPort();
-  namespace.com = new serialCommunicator(namespace.port, parser);
-  namespace.com.startCommunication();
+  namespace.port.on('open', () => {
+    const parser = new ByteLength({ length: 12 });
+    namespace.com = new serialCommunicator(namespace.port, parser);
+    namespace.com.startCommunication();
+  });
 }
 namespace.port.on('close', (err) => {
   console.log(`Port closed.`);
   reconnect(); // Serial Port Initialization Function. It's your method to declare serial port.
 });
-
 namespace.port.on('open', () => {
   const parser = new ByteLength({ length: 12 });
   namespace.com = new serialCommunicator(namespace.port, parser);
