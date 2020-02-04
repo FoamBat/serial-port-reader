@@ -55,7 +55,6 @@ function constructSerialPort() {
   return new SerialPort(
     'COM1',
     {
-      autoOpen: false,
       baudRate: 9600,
       dataBits: 8,
       stopBits: 1,
@@ -105,7 +104,6 @@ function reconnect() {
   console.log(`reconnect initiated`);
   namespace.port = constructSerialPort();
   namespace.port.on('open', onOpen);
-  namespace.port.open();
   namespace.port.on('close', (err) => {
     console.log(`Port closed.`);
     reconnect(); // Serial Port Initialization Function. It's your method to declare serial port.
