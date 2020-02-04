@@ -104,7 +104,7 @@ function reconnect() {
 }
 namespace.port.on('close', (err) => {
   console.log('Port closed.');
-  if (err.disconnected === true) {
+  if (namespace.port.disconnected === true) {
     console.log('Disconnected!');
     namespace.port.resume((e) => {
       reconnect(); // Serial Port Initialization Function. It's your method to declare serial port.
