@@ -20,13 +20,16 @@ function constructSerialPort() {
   );
 }
 
+function constructByteLengthParser(byteLen) {
+  return new ByteLength({ length: byteLen });
+}
 function initNewCommunication(port) {
   delete namespace.com;
   port.close();
 }
 function onOpen() {
   console.log(`${new Date().toLocaleString()} Port opened.`);
-  const parser = new ByteLength({ length: 12 });
+  const parser = constructByteLengthParser(12);
   namespace.com = new SerialCommunicator(namespace.port, parser);
   namespace.com.startCommunication();
   namespace.com.on('data', function(data) {
@@ -41,7 +44,7 @@ function onOpen() {
   });
   namespace.com.on('log_in', function() {
     namespace.com.setListener(1000 * 3, commands.getData);
-    const parser = new ByteLength({ length: 53 });
+    const parser = constructByteLengthParser(53);
     namespace.com.setParser(parser);
   });
 }
