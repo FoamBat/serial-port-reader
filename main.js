@@ -97,6 +97,11 @@ function initNewCommunication(port) {
   delete namespace.com;
   port.close();
 }
+function onOpen() {
+  const parser = new ByteLength({ length: 12 });
+  namespace.com = new serialCommunicator(namespace.port, parser);
+  namespace.com.startCommunication();
+}
 function reconnect() {
   console.log(`reconnect initiated`);
   namespace.port = constructSerialPort();
@@ -106,11 +111,8 @@ namespace.port.on('close', (err) => {
   console.log(`Port closed.`);
   reconnect(); // Serial Port Initialization Function. It's your method to declare serial port.
 });
-namespace.port.on('open', () => {
-  const parser = new ByteLength({ length: 12 });
-  namespace.com = new serialCommunicator(namespace.port, parser);
-  namespace.com.startCommunication();
-});
+
+namespace.port.on('open', onOpen);
 
 class serialCommunicator extends EventEmitter {
   constructor(port, parser) {
