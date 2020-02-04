@@ -104,6 +104,7 @@ function onOpen() {
 function reconnect() {
   console.log(`reconnect initiated`);
   namespace.port = constructSerialPort();
+  namespace.port.on('open', onOpen);
   namespace.port.open();
 }
 var namespace = {};
@@ -112,9 +113,7 @@ namespace.port.on('close', (err) => {
   console.log(`Port closed.`);
   reconnect(); // Serial Port Initialization Function. It's your method to declare serial port.
 });
-setTimeout(() => {
-  namespace.port.on('open', onOpen);
-}, 1000);
+namespace.port.on('open', onOpen);
 
 class serialCommunicator extends EventEmitter {
   constructor(port, parser) {
