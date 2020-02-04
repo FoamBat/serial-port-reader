@@ -130,13 +130,11 @@ class serialCommunicator extends EventEmitter {
 
     this.on('data', function() {
       console.log(`${new Date().toLocaleString()} data read event fired`);
-      // if (this.lastDataReceivedBeforeGivenMinutes(30)) {
-      if (true) {
+      if (this.lastDataReceivedBeforeGivenMinutes(30)) {
         console.log(
           `${new Date().toLocaleString()} last data read was found ago 30 or more minutes!`
         );
         this.clearListener();
-        //this.parser.removeAllListeners('data');
         initNewCommunication(this.port);
       }
     });
