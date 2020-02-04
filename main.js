@@ -98,6 +98,7 @@ function initNewCommunication(port) {
   port.close();
 }
 function reconnect() {
+  console.log(`reconnect initiated`);
   namespace.port = constructSerialPort();
   namespace.port.open();
 }
