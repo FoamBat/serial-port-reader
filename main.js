@@ -1,9 +1,10 @@
 const SerialPort = require('serialport');
-
 const ByteLength = require('@serialport/parser-byte-length');
-const SerialCommunicator = require('./serialCom');
-const parseData = require('./parser');
-const commands = require('./commands');
+
+const SerialCommunicator = require('./SerialPortCommunication/serialCom');
+const parseData = require('./DataServices/parser');
+const commands = require('./SerialPortCommunication/commands');
+const { DATA_INTERVAL, LOGIN_INTERVAL } = require('../config');
 
 function constructSerialPort() {
   return new SerialPort(
@@ -32,7 +33,7 @@ function onOpen() {
   console.log(`${new Date().toLocaleString()} Port opened.`);
   const parser = constructByteLengthParser(12);
   namespace.com = new SerialCommunicator(namespace.port, parser);
-  namespace.com.startCommunication(commands.logIn);
+  namespace.com.startCommunication(commands.logIn, LOGIN_INTERVAL);
   namespace.com.on('data', function(data) {
     parseData(data);
     if (true) {
@@ -44,7 +45,7 @@ function onOpen() {
     }
   });
   namespace.com.on('log_in', function() {
-    namespace.com.setListener(1000 * 3, commands.getData);
+    namespace.com.setListener(DATA_INTERVAL, commands.getData);
     const parser = constructByteLengthParser(53);
     namespace.com.setParser(parser);
   });

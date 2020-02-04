@@ -1,4 +1,5 @@
 const fs = require('fs');
+const sendDataToSnInstance = require('./sn-rest-api');
 
 const dataLabels = [
   'Heat Sink Temperature (C)',
@@ -65,6 +66,8 @@ function parseData(arr) {
     //console.log(`${dataLabels[i * 2]} - ${temp * dataLabels[i * 2 + 1]}`);
   }
   appendDataToFile(object);
+  sendDataToSnInstance(object);
+
   return object;
 }
 
