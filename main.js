@@ -158,6 +158,7 @@ class serialCommunicator extends EventEmitter {
     let dateDiffInMinutes =
       (this.currentDataReadTimestamp - this.lastDataReadTimestamp) /
       (1000 * 60);
+    console.log(`${dateDiffInMinutes} minutes before last data read`);
     return dateDiffInMinutes >= amountOfMinutes;
   }
   dataReceived(data) {
