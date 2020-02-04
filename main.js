@@ -80,7 +80,7 @@ function onOpen() {
   });
 }
 function connect(port) {
-  port.on('open', onOpen.bind(port));
+  port.on('open', onOpen.bind(this, port));
   port.on('close', (err) => {
     console.log(
       `${new Date().toLocaleString()} Port closed. Reconnect to SerialPort.`
