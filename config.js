@@ -1,4 +1,4 @@
-require('dotenv').config();
+const dotenv = require('dotenv').config();
 
 module.exports = {
   username: process.env.SN_USERNAME,
