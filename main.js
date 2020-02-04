@@ -130,11 +130,9 @@ class serialCommunicator extends EventEmitter {
     this.currentDataReadTimestamp;
     this.listener;
     this.port = port;
-
     this.setParser(parser);
 
     this.on('log_in', function() {
-      //console.log(`${new Date().toLocaleString()} log_in event fired`);
       this.setListener(1000 * 3, commands.getData);
       const parser = new ByteLength({ length: 53 });
       this.setParser(parser);
