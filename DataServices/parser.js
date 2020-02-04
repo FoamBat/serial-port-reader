@@ -73,7 +73,7 @@ const dataLabels = [
   'fac',
   0.01,
   'pac',
-  1,
+  0.001,
   'zac',
   0.001,
   'e_total',
@@ -100,7 +100,8 @@ function appendDataToFile(data) {
 
 function parseData(arr) {
   let object = {};
-  object['Date Time'] = new Date();
+  object['inverter'] = '10001851101';
+  object['date_time'] = new Date();
   for (let i = 0; i < 21; i++) {
     let temp = (arr[9 + i * 2] << 8) + arr[10 + i * 2];
     object[dataLabels[i * 2]] = temp * dataLabels[i * 2 + 1];

@@ -22,6 +22,13 @@ function constructSerialPort() {
     }
   );
 }
+function decToAscii(data) {
+  let result = '';
+  data.map((charCode) => {
+    result += String.fromCharCode(charCode);
+  });
+  return result;
+}
 
 function constructByteLengthParser(byteLen) {
   return new ByteLength({ length: byteLen });
@@ -32,11 +39,11 @@ function initNewCommunication(port) {
 }
 function onOpen() {
   console.log(`${new Date().toLocaleString()} Port opened.`);
-  const parser = constructByteLengthParser(12);
+  const parser = constructByteLengthParser(22);
   namespace.com = new SerialCommunicator(namespace.port, parser);
 
   // start communicating with inverter using command (1st param) and interval frequency (2nd param)
-  namespace.com.startCommunication(commands.logIn, LOGIN_INTERVAL);
+  namespace.com.setListener(commands.getSerialNumber, LOGIN_INTERVAL);
   namespace.com.on('data', function(data) {
     // send received data to Servicenow
     sendDataToSnInstance(parseData(data));
@@ -49,9 +56,16 @@ function onOpen() {
       initNewCommunication(namespace.port);
     }
   });
-  namespace.com.on('log_in', function() {
-    namespace.com.setListener(DATA_INTERVAL, commands.getData);
+  namespace.com.on('log_in', function(data) {
+    console.log(decToAscii(data));
+    namespace.com.setListener(commands.getData, DATA_INTERVAL);
     const parser = constructByteLengthParser(53);
+    namespace.com.setParser(parser);
+  });
+  namespace.com.on('serial_number', function(data) {
+    console.log(decToAscii(data));
+    namespace.com.setListener(commands.logIn, LOGIN_INTERVAL);
+    const parser = constructByteLengthParser(12);
     namespace.com.setParser(parser);
   });
 }

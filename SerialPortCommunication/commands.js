@@ -1,5 +1,7 @@
 const inverterSerialNumber = [49, 48, 48, 48, 49, 56, 53, 49, 49, 48, 49]; // 11 Bytes
 
+//10001851101
+
 function calculateChecksum(command) {
   const length = command.length;
   const checksum = command.reduce((acc, val) => {

@@ -33,30 +33,27 @@ class SerialCommunicator extends EventEmitter {
     return dateDiffInMinutes >= amountOfMinutes;
   }
   dataReceived(data) {
-    let hexByteDataArr = [...data];
-    let dataLength = hexByteDataArr.length;
+    let decimalByteDataArr = [...data];
+    let dataLength = decimalByteDataArr.length;
     console.log(dataLength);
     if (dataLength === 22) {
       console.log(
-        `${new Date().toLocaleString()} Serial Number received - ${hexByteDataArr}`
+        `${new Date().toLocaleString()} Serial Number received - ${decimalByteDataArr}`
       );
-      this.emit('serial_number');
+      this.emit('serial_number', decimalByteDataArr);
     }
     if (dataLength === 12) {
       console.log(
-        `${new Date().toLocaleString()} Log In received - ${hexByteDataArr}`
+        `${new Date().toLocaleString()} Log In received - ${decimalByteDataArr}`
       );
-      this.emit('log_in');
+      this.emit('log_in', decimalByteDataArr);
     }
     if (dataLength === 53) {
       console.log(
-        `${new Date().toLocaleString()} Data From Inverter received - ${hexByteDataArr}`
+        `${new Date().toLocaleString()} Data From Inverter received - ${decimalByteDataArr}`
       );
-      this.emit('data', hexByteDataArr);
+      this.emit('data', decimalByteDataArr);
     }
-  }
-  startCommunication(startCommand, logInInterval) {
-    this.setListener(logInInterval, startCommand);
   }
   attachDataEventOnParser() {
     this.parser.on('data', this.dataReceived.bind(this));
@@ -70,7 +67,7 @@ class SerialCommunicator extends EventEmitter {
   clearListener() {
     clearInterval(this.listener);
   }
-  setListener(timeout, command) {
+  setListener(command, timeout) {
     if (this.listener) clearInterval(this.listener);
     this.listener = setInterval(() => {
       this.writeAndDrain(command);
