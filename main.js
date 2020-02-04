@@ -99,6 +99,18 @@ function onOpen() {
   const parser = new ByteLength({ length: 12 });
   namespace.com = new serialCommunicator(namespace.port, parser);
   namespace.com.startCommunication();
+  namespace.com.on('data', function(data) {
+    // console.log(
+    //   `${new Date().toLocaleString()} data read event fired, ${data}`
+    // );
+    if (/*this.lastDataReceivedBeforeGivenMinutes(30)*/ true) {
+      console.log(
+        `${new Date().toLocaleString()} last data read was found ago 30 or more minutes!`
+      );
+      namespace.com.clearListener();
+      initNewCommunication(this.port);
+    }
+  });
 }
 function reconnect() {
   namespace.port = constructSerialPort();
@@ -122,23 +134,10 @@ class serialCommunicator extends EventEmitter {
     this.setParser(parser);
 
     this.on('log_in', function() {
-      console.log(`${new Date().toLocaleString()} log_in event fired`);
+      //console.log(`${new Date().toLocaleString()} log_in event fired`);
       this.setListener(1000 * 3, commands.getData);
       const parser = new ByteLength({ length: 53 });
       this.setParser(parser);
-    });
-
-    this.on('data', function(data) {
-      console.log(
-        `${new Date().toLocaleString()} data read event fired, ${data}`
-      );
-      if (/*this.lastDataReceivedBeforeGivenMinutes(30)*/ true) {
-        console.log(
-          `${new Date().toLocaleString()} last data read was found ago 30 or more minutes!`
-        );
-        this.clearListener();
-        initNewCommunication(this.port);
-      }
     });
   }
   writeAndDrain(data) {
