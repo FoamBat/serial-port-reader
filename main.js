@@ -103,14 +103,8 @@ function reconnect() {
   namespace.com.startCommunication();
 }
 namespace.port.on('close', (err) => {
-  console.log(`Port closed. ${JSON.stringify(namespace)}`);
-  if (namespace.port.disconnected === true) {
-    console.log('Disconnected!');
-    namespace.port.resume((e) => {
-      reconnect(); // Serial Port Initialization Function. It's your method to declare serial port.
-      console.log('Error on resuming port:', e);
-    });
-  }
+  console.log(`Port closed.`);
+  reconnect(); // Serial Port Initialization Function. It's your method to declare serial port.
 });
 
 namespace.port.on('open', () => {
