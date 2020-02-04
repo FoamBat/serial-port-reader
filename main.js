@@ -128,8 +128,10 @@ class serialCommunicator extends EventEmitter {
       this.setParser(parser);
     });
 
-    this.on('data', function() {
-      console.log(`${new Date().toLocaleString()} data read event fired`);
+    this.on('data', function(data) {
+      console.log(
+        `${new Date().toLocaleString()} data read event fired, ${data}`
+      );
       if (this.lastDataReceivedBeforeGivenMinutes(30)) {
         console.log(
           `${new Date().toLocaleString()} last data read was found ago 30 or more minutes!`
@@ -181,8 +183,7 @@ class serialCommunicator extends EventEmitter {
       console.log(
         `${new Date().toLocaleString()} Data From Inverter received - ${hexByteDataArr}`
       );
-      this.emit('data');
-      parseData(hexByteDataArr);
+      this.emit('data', hexByteDataArr);
     }
   }
   startCommunication() {
