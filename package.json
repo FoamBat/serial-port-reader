@@ -19,6 +19,7 @@
   "dependencies": {
     "@serialport/parser-byte-length": "^8.0.6",
     "dotenv": "^8.2.0",
+    "request": "^2.88.0",
     "serialport": "^8.0.6"
   }
 }
