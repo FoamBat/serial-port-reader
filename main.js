@@ -113,7 +113,7 @@ namespace.port.on('close', (err) => {
   console.log(`Port closed.`);
   reconnect(); // Serial Port Initialization Function. It's your method to declare serial port.
 });
-namespace.port.on('open', onOpen);
+//namespace.port.on('open', onOpen);
 
 class serialCommunicator extends EventEmitter {
   constructor(port, parser) {
