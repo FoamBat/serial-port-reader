@@ -44,8 +44,8 @@ function initNewCommunication(port) {
   port.close();
 }
 function onOpen() {
-  let port = this.port;
-  console.log(`${new Date().toLocaleString()} ${this.port} Port opened.`);
+  let port = this;
+  console.log(`${new Date().toLocaleString()} ${port} Port opened.`);
   const parser = constructByteLengthParser(RETURN_BYTES_OF_SERIAL);
   let Communicator = new SerialCommunicator(port, parser);
 
@@ -80,7 +80,7 @@ function onOpen() {
   });
 }
 function connect(port) {
-  port.on('open', onOpen.bind(this, port));
+  port.on('open', onOpen.apply(port));
   port.on('close', (err) => {
     console.log(
       `${new Date().toLocaleString()} Port closed. Reconnect to SerialPort.`
