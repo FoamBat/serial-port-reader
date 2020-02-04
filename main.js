@@ -94,7 +94,9 @@ namespace.port = constructSerialPort();
 
 function initNewCommunication(port) {
   delete namespace.com;
-  port.close();
+  port.close(() => {
+    reconnect();
+  });
 }
 function reconnect() {
   const parser = new ByteLength({ length: 12 });
