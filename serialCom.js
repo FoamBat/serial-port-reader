@@ -55,8 +55,8 @@ class SerialCommunicator extends EventEmitter {
       this.emit('data', hexByteDataArr);
     }
   }
-  startCommunication() {
-    this.setListener(1000 * 3, commands.logIn);
+  startCommunication(startCommand) {
+    this.setListener(1000 * 3, startCommand);
   }
   attachDataEventOnParser() {
     this.parser.on('data', this.dataReceived.bind(this));

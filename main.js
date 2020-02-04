@@ -32,7 +32,7 @@ function onOpen() {
   console.log(`${new Date().toLocaleString()} Port opened.`);
   const parser = constructByteLengthParser(12);
   namespace.com = new SerialCommunicator(namespace.port, parser);
-  namespace.com.startCommunication();
+  namespace.com.startCommunication(commands.logIn);
   namespace.com.on('data', function(data) {
     parseData(data);
     if (true) {
