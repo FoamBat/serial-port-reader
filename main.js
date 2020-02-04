@@ -45,11 +45,7 @@ function initNewCommunication(port) {
 }
 function onOpen() {
   let port = this;
-  console.log(
-    `${new Date().toLocaleString()} ${Object.getOwnProperties(
-      port
-    )} Port opened.`
-  );
+  console.log(`${new Date().toLocaleString()} ${port.path} Port opened.`);
   const parser = constructByteLengthParser(RETURN_BYTES_OF_SERIAL);
   let Communicator = new SerialCommunicator(port, parser);
 
