@@ -103,7 +103,7 @@ function reconnect() {
   namespace.com.startCommunication();
 }
 namespace.port.on('close', (err) => {
-  console.log(`Port closed. ${namespace.port.disconnected}`);
+  console.log(`Port closed. ${err}`);
   if (namespace.port.disconnected === true) {
     console.log('Disconnected!');
     namespace.port.resume((e) => {
