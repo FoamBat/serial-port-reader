@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const dataLabels = [
   'Heat Sink Temperature (C)',
   0.1,
