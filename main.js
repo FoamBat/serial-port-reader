@@ -108,7 +108,7 @@ function onOpen() {
         `${new Date().toLocaleString()} last data read was found ago 30 or more minutes!`
       );
       namespace.com.clearListener();
-      initNewCommunication(this.port);
+      initNewCommunication(namespace.port);
     }
   });
 }
