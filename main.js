@@ -78,7 +78,8 @@ function onOpen() {
     console.log(data);
     const inverterNumberInAscii = decimalToAscii(data).substring(9, 21);
     const parser = constructByteLengthParser(RETURN_BYTES_OF_LOGIN);
-    const inverterNumberInDecimal = data.slice(9, 21);
+    const inverterNumberInDecimal = data.slice(9, 20);
+    console.log(inverterNumberInDecimal);
 
     Communicator.setInverterNumber(inverterNumberInAscii);
 

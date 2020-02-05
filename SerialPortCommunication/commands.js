@@ -19,7 +19,9 @@ const commands = {
   getData: calculateChecksum([187, 187, 1, 0, 0, 1, 1, 2, 0]),
   // format of LogIn command [9 bytes + 11 bytes of serial number + 2 bytes of checksum]
   logIn: function(invNumber) {
-    calculateChecksum([187, 187, 0, 0, 0, 0, 0, 1, 12].concat(invNumber, 1));
+    return calculateChecksum(
+      [187, 187, 0, 0, 0, 0, 0, 1, 12].concat(invNumber, 1)
+    );
   }
 };
 
