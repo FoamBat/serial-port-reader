@@ -71,7 +71,7 @@ function onOpen() {
     Communicator.setParser(parser);
   });
   Communicator.on('serial_number', function(data) {
-    const inverterNumber = decimalToAscii(data).substring(11, 23);
+    const inverterNumber = decimalToAscii(data).substring(10, 22);
     const parser = constructByteLengthParser(RETURN_BYTES_OF_LOGIN);
 
     Communicator.setInverterNumber(inverterNumber);
