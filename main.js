@@ -90,7 +90,7 @@ function connect(port) {
 }
 
 var namespace = {};
-namespace.com2 = constructSerialPort('COM2', 19200);
-namespace.com6 = constructSerialPort('COM6', 19200);
+namespace.com2 = constructSerialPort('COM2', 9600);
+namespace.com6 = constructSerialPort('COM6', 9600);
 connect(namespace.com2);
 connect(namespace.com6);
