@@ -24,7 +24,9 @@ function constructSerialPort(port, baudRate) {
     },
     (error) => {
       if (error)
-        console.log(`connection with serialport ${port} failed: ${error}`);
+        console.log(
+          `Connection with serialport (${port.path}) failed: ${error}`
+        );
     }
   );
 }
@@ -91,7 +93,9 @@ function connect(port) {
   port.on('open', onOpen.bind(port));
   port.on('close', (err) => {
     console.log(
-      `${new Date().toLocaleString()} Port closed. Reconnect to SerialPort.`
+      `${new Date().toLocaleString()} Port (${
+        port.path
+      }) closed. Reconnect to SerialPort.`
     );
     connect(port);
   });

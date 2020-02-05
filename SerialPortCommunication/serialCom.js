@@ -9,12 +9,13 @@ class SerialCommunicator extends EventEmitter {
     this.listener;
     this.inverterNumber;
     this.port = port;
+    this.path = port.path;
     this.setParser(parser);
   }
   writeAndDrain(data) {
     var port = this.port;
     console.log(
-      `${new Date().toLocaleString()} -Data sent to inverter (${
+      `${new Date().toLocaleString()} Data sent to inverter (${
         port.path
       }): ${data}`
     );
@@ -35,7 +36,9 @@ class SerialCommunicator extends EventEmitter {
       (this.currentDataReadTimestamp - this.lastDataReadTimestamp) /
       (1000 * 60);
     console.log(
-      `${new Date().toLocaleString()} ${dateDiffInMinutes} minutes before last data read`
+      `${new Date().toLocaleString()} (${
+        this.path
+      }) ${dateDiffInMinutes} minutes before last data read`
     );
     return dateDiffInMinutes >= amountOfMinutes;
   }
@@ -45,19 +48,25 @@ class SerialCommunicator extends EventEmitter {
     console.log(dataLength);
     if (dataLength === 22) {
       console.log(
-        `${new Date().toLocaleString()} Serial Number received - ${decimalByteDataArr}`
+        `${new Date().toLocaleString()} (${
+          this.path
+        }) Serial Number received - ${decimalByteDataArr}`
       );
       this.emit('serial_number', decimalByteDataArr);
     }
     if (dataLength === 12) {
       console.log(
-        `${new Date().toLocaleString()} Log In received - ${decimalByteDataArr}`
+        `${new Date().toLocaleString()} (${
+          this.path
+        }) Log In received - ${decimalByteDataArr}`
       );
       this.emit('log_in', decimalByteDataArr);
     }
     if (dataLength === 53) {
       console.log(
-        `${new Date().toLocaleString()} Data From Inverter received - ${decimalByteDataArr}`
+        `${new Date().toLocaleString()} (${
+          this.path
+        }) Data From Inverter received - ${decimalByteDataArr}`
       );
       this.emit('data', decimalByteDataArr);
     }
