@@ -45,7 +45,7 @@ function initNewCommunication(port) {
 }
 function onOpen() {
   let port = this;
-  console.log(`${new Date().toLocaleString()} ${port.path} Port opened.`);
+  console.log(`${new Date().toLocaleString()} (${port.path}) Port opened.`);
   const parser = constructByteLengthParser(RETURN_BYTES_OF_SERIAL);
   let Communicator = new SerialCommunicator(port, parser);
 
@@ -58,7 +58,9 @@ function onOpen() {
 
     if (Communicator.lastDataReceivedBeforeGivenMinutes >= 30) {
       console.log(
-        `${new Date().toLocaleString()} last data read was found ago 30 or more minutes!`
+        `${new Date().toLocaleString()} (${
+          port.path
+        }) last data read was found ago 30 or more minutes!`
       );
       Communicator.clearListener();
       initNewCommunication(port);
@@ -71,11 +73,17 @@ function onOpen() {
     Communicator.setParser(parser);
   });
   Communicator.on('serial_number', function(data) {
-    const inverterNumber = decimalToAscii(data).substring(9, 21);
+    console.log(data);
+    const inverterNumberInAscii = decimalToAscii(data).substring(9, 21);
     const parser = constructByteLengthParser(RETURN_BYTES_OF_LOGIN);
+    const inverterNumberInDecimal = data.slice(9, 21);
 
-    Communicator.setInverterNumber(inverterNumber);
-    Communicator.setListener(commands.logIn(inverterNumber), LOGIN_INTERVAL);
+    Communicator.setInverterNumber(inverterNumberInAscii);
+
+    Communicator.setListener(
+      commands.logIn(inverterNumberInDecimal),
+      LOGIN_INTERVAL
+    );
     Communicator.setParser(parser);
   });
 }
