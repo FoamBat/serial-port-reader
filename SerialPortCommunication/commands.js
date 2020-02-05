@@ -18,9 +18,9 @@ const commands = {
   getConfigurations: calculateChecksum([187, 187, 1, 0, 0, 1, 1, 4, 0]),
   getData: calculateChecksum([187, 187, 1, 0, 0, 1, 1, 2, 0]),
   // format of LogIn command [9 bytes + 11 bytes of serial number + 2 bytes of checksum]
-  logIn: calculateChecksum(
-    [187, 187, 0, 0, 0, 0, 0, 1, 12].concat(inverterSerialNumber, 1)
-  )
+  logIn: function(invNumber) {
+    calculateChecksum([187, 187, 0, 0, 0, 0, 0, 1, 12].concat(invNumber, 1));
+  }
 };
 
 module.exports = commands;

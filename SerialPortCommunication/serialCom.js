@@ -14,8 +14,8 @@ class SerialCommunicator extends EventEmitter {
   writeAndDrain(data) {
     var port = this.port;
     console.log(
-      `${new Date().toLocaleString()} Data sent to inverter (${
-        this.port.path
+      `${new Date().toLocaleString()} -Data sent to inverter (${
+        port.path
       }): ${data}`
     );
     port.flush();
