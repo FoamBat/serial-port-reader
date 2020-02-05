@@ -100,6 +100,7 @@ function appendDataToFile(data) {
 
 function parseData(arr, inverterNumber) {
   let object = {};
+  console.log(inverterNumber);
   object['inverter'] = inverterNumber;
   object['date_time'] = new Date();
   for (let i = 0; i < 21; i++) {
