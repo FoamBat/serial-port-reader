@@ -13,7 +13,11 @@ class SerialCommunicator extends EventEmitter {
   }
   writeAndDrain(data) {
     var port = this.port;
-    console.log(`Data sent to inverter: ${data}`);
+    console.log(
+      `${new Date().toLocaleString()} Data sent to inverter (${
+        this.port.path
+      }): ${data}`
+    );
     port.flush();
     port.write(data, function(error) {
       if (error) {
@@ -30,7 +34,9 @@ class SerialCommunicator extends EventEmitter {
     let dateDiffInMinutes =
       (this.currentDataReadTimestamp - this.lastDataReadTimestamp) /
       (1000 * 60);
-    console.log(`${dateDiffInMinutes} minutes before last data read`);
+    console.log(
+      `${new Date().toLocaleString()} ${dateDiffInMinutes} minutes before last data read`
+    );
     return dateDiffInMinutes >= amountOfMinutes;
   }
   dataReceived(data) {
