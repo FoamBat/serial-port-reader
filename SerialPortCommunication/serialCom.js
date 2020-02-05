@@ -45,7 +45,7 @@ class SerialCommunicator extends EventEmitter {
   dataReceived(data) {
     let decimalByteDataArr = [...data];
     let dataLength = decimalByteDataArr.length;
-    console.log(dataLength);
+    //console.log(dataLength);
     if (dataLength === 22) {
       console.log(
         `${new Date().toLocaleString()} (${
