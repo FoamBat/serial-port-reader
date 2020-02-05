@@ -75,7 +75,7 @@ function onOpen() {
     const parser = constructByteLengthParser(RETURN_BYTES_OF_LOGIN);
 
     Communicator.setInverterNumber(inverterNumber);
-    Communicator.setListener(commands.logIn, LOGIN_INTERVAL);
+    Communicator.setListener(commands.logIn(inverterNumber), LOGIN_INTERVAL);
     Communicator.setParser(parser);
   });
 }
